@@ -2,6 +2,7 @@ package org.usfirst.frc.team6843.robot.subsystems;
 
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 /**
@@ -9,9 +10,8 @@ import edu.wpi.first.wpilibj.command.Subsystem;
  */
 public class PneumaticsBase extends Subsystem {
 
-	public Compressor Compressor = new Compressor(0);
-	public DoubleSolenoid cubePush = new DoubleSolenoid(0,1);
-	public DoubleSolenoid jaws = new DoubleSolenoid(2,3);
+	public Solenoid cubePush = new Solenoid(0);
+	public DoubleSolenoid jaws = new DoubleSolenoid(1, 2);
 	public boolean cubePushToggle = true;
 	public boolean toggleJawsToggle = true;
 	
@@ -30,15 +30,12 @@ public class PneumaticsBase extends Subsystem {
 		} 	
     }
     
-    public void cubePush() {
-     	cubePushToggle = !cubePushToggle;
-    	if(cubePushToggle == true) {
-			cubePush.set(DoubleSolenoid.Value.kForward);
-
-		} else {
-			cubePush.set(DoubleSolenoid.Value.kReverse);
-		} 	
-
+    public void cubePushOn() {
+    cubePush.set(true);
+    }
+    
+    public void cubePushOff() {
+    	cubePush.set(false);
     }
 }
 

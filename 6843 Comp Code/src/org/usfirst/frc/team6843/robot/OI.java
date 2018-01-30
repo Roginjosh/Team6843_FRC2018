@@ -48,7 +48,7 @@ public class OI {
 		buttonB.whenPressed(new RightTurnn());
 		buttonStart.whenPressed(new ZoopZoopRight());
 		buttonBack.whenPressed(new ZoopZoopLeft());
-		buttonLJoyClick.whenPressed(new SingleSolenoidOnOff());
+		buttonLJoyClick.whileHeld(new SingleSolenoidOnOff());
 		buttonRJoyClick.whenPressed(new ToggleJaws());
 	}
 	

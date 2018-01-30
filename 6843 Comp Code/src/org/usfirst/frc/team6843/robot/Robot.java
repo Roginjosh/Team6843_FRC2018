@@ -32,6 +32,7 @@ import org.usfirst.frc.team6843.robot.subsystems.PneumaticsBase;
  */
 public class Robot extends TimedRobot {
 	public static OI m_oi;
+	public Compressor Compressor = new Compressor(0);
 
 	Command autonomousCommand;
 	SendableChooser<Command> m_chooser = new SendableChooser<>();
@@ -58,8 +59,8 @@ private String Version = "1.0.0";
 		INSTANCE = this;
 		this.logger = Logger.getLogger(this.getClass().getName());
 		this.driveSubsystem = new DriveSubsystem();
-		this.oi = new OI();
-		this.PneumaticsBase.Compressor.setClosedLoopControl(true);
+		this.PneumaticsBase = new PneumaticsBase();
+		this.oi = new OI();   //must be below subsystems!!!
 		autonomousCommand = new AutoLeftSwitch();		//auto_chooser.addDefault("Default Auto", new ExampleCommand());
 		// chooser.addObject("My Auto", new MyAutoCommand());
 		//SmartDashboard.putData("Auto mode", auto_chooser);
