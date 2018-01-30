@@ -7,6 +7,8 @@
 
 package org.usfirst.frc.team6843.robot;
 
+import edu.wpi.first.wpilibj.Compressor;
+import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
@@ -20,6 +22,7 @@ import javax.swing.Spring;
 import org.usfirst.frc.team6843.robot.commands.AutoLeftSwitch;
 import org.usfirst.frc.team6843.robot.commands.ExampleCommand;
 import org.usfirst.frc.team6843.robot.subsystems.DriveSubsystem;
+import org.usfirst.frc.team6843.robot.subsystems.PneumaticsBase;
 /**
  * The VM is configured to automatically run this class, and to call the
  * functions corresponding to each mode, as described in the TimedRobot
@@ -34,11 +37,12 @@ public class Robot extends TimedRobot {
 	SendableChooser<Command> m_chooser = new SendableChooser<>();
 private static Robot INSTANCE;
 private DriveSubsystem driveSubsystem;
+private PneumaticsBase PneumaticsBase;
 private OI oi;
 private Logger logger;
 private String Version = "1.0.0";
-
 //SendableChooser<Command> auto_chooser = new SendableChooser<>();
+
 
 	/**
 	 * This function is run when the robot is first started up and should be
@@ -52,12 +56,11 @@ private String Version = "1.0.0";
 		SmartDashboard.putData("Auto mode", m_chooser);
 		*/
 		INSTANCE = this;
-		
 		this.logger = Logger.getLogger(this.getClass().getName());
 		this.driveSubsystem = new DriveSubsystem();
 		this.oi = new OI();
-		autonomousCommand = new AutoLeftSwitch();
-		//auto_chooser.addDefault("Default Auto", new ExampleCommand());
+		this.PneumaticsBase.Compressor.setClosedLoopControl(true);
+		autonomousCommand = new AutoLeftSwitch();		//auto_chooser.addDefault("Default Auto", new ExampleCommand());
 		// chooser.addObject("My Auto", new MyAutoCommand());
 		//SmartDashboard.putData("Auto mode", auto_chooser);
 		
@@ -90,6 +93,14 @@ private String Version = "1.0.0";
 					"Robot.getDriveSubsystem() was called before Robot.robotInit() was called.");
 		}
 		return this.driveSubsystem;
+	}
+	
+	public PneumaticsBase getPneumaticsBase() {
+		if (this.PneumaticsBase == null) {
+			throw new IllegalStateException(
+					"Robot.getPneumaticsBase() was called before Robot.robotInit() was called.");
+		}
+		return this.PneumaticsBase;
 	}
 	
 	

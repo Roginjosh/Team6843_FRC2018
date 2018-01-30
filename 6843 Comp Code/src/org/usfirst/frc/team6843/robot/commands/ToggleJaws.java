@@ -11,11 +11,11 @@ import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Solenoid;
 
-public class SingleSolenoidOnOff extends Command{
+public class ToggleJaws extends Command{
 	
 	protected PneumaticsBase PneumaticsBase;
 	
-	public SingleSolenoidOnOff() {
+	public ToggleJaws() {
 		this.PneumaticsBase = Robot.getInstance().getPneumaticsBase();
 		requires(this.PneumaticsBase);
 
@@ -29,7 +29,7 @@ public class SingleSolenoidOnOff extends Command{
 		// Called repeatedly when this Command is scheduled to run
 		
 		protected void execute() {
-		this.PneumaticsBase.cubePush();
+		this.PneumaticsBase.ToggleJaws();
 		}
 		// Make this return true when this Command no longer needs to run execute()
 		protected boolean isFinished() {

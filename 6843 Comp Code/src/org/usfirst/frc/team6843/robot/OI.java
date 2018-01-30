@@ -12,6 +12,8 @@ import org.usfirst.frc.team6843.robot.commands.DistDrive;
 import org.usfirst.frc.team6843.robot.commands.ExampleCommand;
 import org.usfirst.frc.team6843.robot.commands.RightTurn;
 import org.usfirst.frc.team6843.robot.commands.RightTurnn;
+import org.usfirst.frc.team6843.robot.commands.SingleSolenoidOnOff;
+import org.usfirst.frc.team6843.robot.commands.ToggleJaws;
 import org.usfirst.frc.team6843.robot.commands.ZoopZoopLeft;
 import org.usfirst.frc.team6843.robot.commands.ZoopZoopRight;
 
@@ -46,6 +48,8 @@ public class OI {
 		buttonB.whenPressed(new RightTurnn());
 		buttonStart.whenPressed(new ZoopZoopRight());
 		buttonBack.whenPressed(new ZoopZoopLeft());
+		buttonLJoyClick.whenPressed(new SingleSolenoidOnOff());
+		buttonRJoyClick.whenPressed(new ToggleJaws());
 	}
 	
 	public double getVertAxis() {
