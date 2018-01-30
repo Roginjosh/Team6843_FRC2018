@@ -8,20 +8,23 @@ public class AutoLeftSwitch extends CommandGroup {
     	addSequential(new ClearEncoders());
     	addSequential(new DistDrive());
     	addSequential(new ClearEncoders());
-    	addSequential(new ZoopZoopRight());
+    	addSequential(new DistDrive());
     	addSequential(new ClearEncoders());	
     	addSequential(new DistDrive());
     	addSequential(new ClearEncoders());
-    	addSequential(new ZoopZoopRight());
-    	addSequential(new ClearEncoders());
     	addSequential(new DistDrive());
     	addSequential(new ClearEncoders());
-    	addSequential(new ZoopZoopRight());
+    	addSequential(new ZoopZoopLeft());
+    	addSequential(new ClearEncoders());
+    	addSequential(new DistDrive());
     	addSequential(new ClearEncoders());	
-    	addSequential(new DistDrive());
+    	addSequential(new DistDriveReverse());
     	addSequential(new ClearEncoders());
     	addSequential(new ZoopZoopRight());
     	addSequential(new ClearEncoders());
-
+    	addSequential(new DistDrive());
+    	addSequential(new ClearEncoders());
+    	addSequential(new DistDrive());
+    	addSequential(new ClearEncoders());
     }
 }
