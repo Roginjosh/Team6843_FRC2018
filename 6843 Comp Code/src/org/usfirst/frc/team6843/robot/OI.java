@@ -16,6 +16,7 @@ import org.usfirst.frc.team6843.robot.commands.SingleSolenoidOnOff;
 import org.usfirst.frc.team6843.robot.commands.ToggleJaws;
 import org.usfirst.frc.team6843.robot.commands.ZoopZoopLeft;
 import org.usfirst.frc.team6843.robot.commands.ZoopZoopRight;
+import org.usfirst.frc.team6843.robot.commands.dDriveTest;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
@@ -50,6 +51,7 @@ public class OI {
 		buttonBack.whenPressed(new ZoopZoopLeft());
 		buttonLJoyClick.whileHeld(new SingleSolenoidOnOff());
 		buttonRJoyClick.whenPressed(new ToggleJaws());
+		buttonX.whenPressed(new dDriveTest());
 	}
 	
 	public double getVertAxis() {

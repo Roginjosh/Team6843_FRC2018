@@ -180,6 +180,11 @@ public class DriveSubsystem extends Subsystem {
 		drive.arcadeDrive((-1 * power), (1 * curve));
 	}
 
+	public void dDriveTest() {
+		leftMotor1.set(ControlMode.Position, 2880);
+		rightMotor1.set(ControlMode.Position, -2880);
+		
+	}
 	public void stop() {
 		//drive.arcadeDrive(0.0, 0.0);
 		leftMotor1.set(ControlMode.Velocity, 0);

@@ -22,6 +22,7 @@ import javax.swing.Spring;
 import org.usfirst.frc.team6843.robot.commands.AutoLeftSwitch;
 import org.usfirst.frc.team6843.robot.commands.ExampleCommand;
 import org.usfirst.frc.team6843.robot.subsystems.DriveSubsystem;
+import org.usfirst.frc.team6843.robot.subsystems.LiftVertAxis;
 import org.usfirst.frc.team6843.robot.subsystems.PneumaticsBase;
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -39,6 +40,7 @@ public class Robot extends TimedRobot {
 private static Robot INSTANCE;
 private DriveSubsystem driveSubsystem;
 private PneumaticsBase PneumaticsBase;
+private LiftVertAxis LiftVertAxis;
 private OI oi;
 private Logger logger;
 private String Version = "1.0.0";
