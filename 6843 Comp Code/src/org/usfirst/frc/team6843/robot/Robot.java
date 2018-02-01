@@ -176,9 +176,9 @@ private String Version = "1.0.0";
 	public void teleopPeriodic() {
 		Scheduler.getInstance().run();
 		SmartDashboard.putNumber("Right Encooder Velocity", this.driveSubsystem.getRightVelocity());
-		SmartDashboard.putNumber("Right Encooder Position", this.driveSubsystem.getRightPosition());
+		SmartDashboard.putNumber("Right Encooder Position", /*this.driveSubsystem.getRightPosition()*/ this.driveSubsystem.rightMotor1.getSelectedSensorPosition(0));
 		SmartDashboard.putNumber("Left Encooder Velocity", this.driveSubsystem.getLeftVelocity());
-		SmartDashboard.putNumber("Left Encooder Position", this.driveSubsystem.getLeftPosition());
+		SmartDashboard.putNumber("Left Encooder Position", /*this.driveSubsystem.getLeftPosition()*/ this.driveSubsystem.leftMotor1.getSelectedSensorPosition(0));
 		SmartDashboard.putString("Version", Version);
 		SmartDashboard.putNumber("Left Target", this.oi.getTarget());
 		SmartDashboard.putNumber("Left Error", this.driveSubsystem.leftMotor1.getClosedLoopError(0));

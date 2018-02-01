@@ -62,6 +62,14 @@ public class DriveSubsystem extends Subsystem {
 		rightMotor1.config_kD(0, 0, 100);
 		rightMotor1.config_IntegralZone(0, 20, 100);
 		
+		// set the peak, nominal outputs, and deadband 
+		// set closed loop gains in slot0 
+		rightMotor1.config_kF(1, 0, 100); 
+		rightMotor1.config_kP(1, 0.2, 100); 
+		rightMotor1.config_kI(1, 0.0, 100);
+		rightMotor1.config_kD(1, 0, 100);
+		rightMotor1.config_IntegralZone(0, 20, 100);
+		
 		
 		leftMotor1.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 100);
 		leftMotor1.setSensorPhase(true);
@@ -76,6 +84,13 @@ public class DriveSubsystem extends Subsystem {
 		leftMotor1.config_kI(0, 0.0055, 100);
 		leftMotor1.config_kD(0, 0, 100);
 		leftMotor1.config_IntegralZone(0, 20, 100);
+		
+		leftMotor1.config_kF(1, 0, 100); 
+		leftMotor1.config_kP(1, 0.2, 100); 
+		leftMotor1.config_kI(1, 0.0, 100);
+		leftMotor1.config_kD(1, 0, 100);
+		leftMotor1.config_IntegralZone(0, 20, 100);
+		
 		
 		leftMotor1.setNeutralMode(NeutralMode.Brake);
 		rightMotor1.setNeutralMode(NeutralMode.Brake);
@@ -113,24 +128,7 @@ public class DriveSubsystem extends Subsystem {
 	}		
 	
 	public void TalonVeloDrive(double power, double curve) {
-	/*	if ((Math.round(magn * 10)) <= 1) {
-			dimeMode = true; 
-		} else {
-			dimeMode = false;
-		}
-		if (dimeMode) {
-			rightMotor1.set(ControlMode.Velocity, (1000 * curve));
-			leftMotor1.set(ControlMode.Velocity, (1000 * curve));
-		} else if (((Math.round(curve * 10)) <= 1) && ((Math.round(magn * 10)) >= -1)) {
-			rightMotor1.set(ControlMode.Velocity, (1000 * magn));
-			leftMotor1.set(ControlMode.Velocity, (-1000 * magn));
-		} else if (Math.round(curve * 100) < 0) {
-			rightMotor1.set(ControlMode.Velocity, (1000 * magn));
-			leftMotor1.set(ControlMode.Velocity, 1000 * -(Math.abs(magn) - (Math.abs(magn) * curve)));
-		} else if (Math.round(curve * 100) > 0) {
-			leftMotor1.set(ControlMode.Velocity, 1000 * magn);
-			rightMotor1.set(ControlMode.Velocity, 1000 * -(Math.abs(magn) - (Math.abs(magn) * curve)));
-			}*/
+
 		if ((Math.round(Math.abs(power) * 10) <= 1 && (Math.round(10 * curve) != 0))) {
 			rightMotor1.set(ControlMode.Velocity, (1000 * curve));
 			leftMotor1.set(ControlMode.Velocity, (1000 * curve));
@@ -180,9 +178,12 @@ public class DriveSubsystem extends Subsystem {
 		drive.arcadeDrive((-1 * power), (1 * curve));
 	}
 
-	public void dDriveTest() {
-		leftMotor1.set(ControlMode.Position, 2880);
-		rightMotor1.set(ControlMode.Position, -2880);
+	public void dDriveTest(double leftPos, double rightPos) {
+		rightMotor1.selectProfileSlot(1, 0);
+		leftMotor1.selectProfileSlot(1, 0);
+		leftMotor1.set(ControlMode.Position, leftPos);
+		rightMotor1.set(ControlMode.Position, rightPos);
+		
 		
 	}
 	public void stop() {

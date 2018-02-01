@@ -69,7 +69,7 @@ public class dDriveTest extends Command {
 	// Called repeatedly when this Command is scheduled to run
 	@Override
 	protected void execute() {
-		this.driveSubsystem.dDriveTest();
+		this.driveSubsystem.dDriveTest(4000, -4000);
 	}
 	// Make this return true when this Command no longer needs to run execute()
 	@Override
@@ -81,12 +81,16 @@ public class dDriveTest extends Command {
 	// Called once after isFinished returns true
 	@Override
 	protected void end() {
+		
 	}
 
 	// Called when another command which requires one or more of the same
 	// subsystems is scheduled to run
 	@Override
 	protected void interrupted() {
-		super.interrupted();
+		this.driveSubsystem.rightMotor1.selectProfileSlot(0, 0);
+		this.driveSubsystem.leftMotor1.selectProfileSlot(0, 0);
+		
+		//super.interrupted();
 	}
 }
