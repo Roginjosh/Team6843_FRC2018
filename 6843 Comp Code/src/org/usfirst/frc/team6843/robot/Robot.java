@@ -9,6 +9,7 @@ package org.usfirst.frc.team6843.robot;
 
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
@@ -19,7 +20,10 @@ import java.util.logging.Logger;
 
 import javax.swing.Spring;
 
+import org.usfirst.frc.team6843.robot.commands.AutoLeftScale;
 import org.usfirst.frc.team6843.robot.commands.AutoLeftSwitch;
+import org.usfirst.frc.team6843.robot.commands.AutoRightScale;
+import org.usfirst.frc.team6843.robot.commands.AutoRightSwitch;
 import org.usfirst.frc.team6843.robot.commands.ExampleCommand;
 import org.usfirst.frc.team6843.robot.subsystems.DriveSubsystem;
 import org.usfirst.frc.team6843.robot.subsystems.LiftVertAxis;
@@ -35,7 +39,7 @@ public class Robot extends TimedRobot {
 	public static OI m_oi;
 	public Compressor Compressor = new Compressor(0);
 
-	Command autonomousCommand;
+	public Command autonomousCommand;
 	SendableChooser<Command> m_chooser = new SendableChooser<>();
 private static Robot INSTANCE;
 private DriveSubsystem driveSubsystem;
@@ -63,9 +67,11 @@ private String Version = "1.0.0";
 		this.driveSubsystem = new DriveSubsystem();
 		this.PneumaticsBase = new PneumaticsBase();
 		this.oi = new OI();   //must be below subsystems!!!
-		autonomousCommand = new AutoLeftSwitch();		//auto_chooser.addDefault("Default Auto", new ExampleCommand());
+		
+		//auto_chooser.addDefault("Default Auto", new ExampleCommand());
 		// chooser.addObject("My Auto", new MyAutoCommand());
 		//SmartDashboard.putData("Auto mode", auto_chooser);
+		
 		
 	}
 
@@ -144,10 +150,27 @@ private String Version = "1.0.0";
 		 * autonomousCommand = new ExampleCommand(); break; }
 		 */
 
-		// schedule the autonomous command (example)
+		// schedule the autonomous command (example):
+		/*
 		if (autonomousCommand != null) {
 			autonomousCommand.start();
 		}
+		*/
+		String gameData; {
+			gameData = DriverStation.getInstance().getGameSpecificMessage();
+		}
+		boolean weLeft = false;
+		if (weLeft) { 		 //If we are on the left
+
+			
+		if (gameData.charAt(1) == 'L') {
+			autonomousCommand = new AutoLeftScale(); 
+		}
+		{
+//Score on scale			autonomousCommand.start();
+		} 
+	}
+		autonomousCommand.start();
 	}
 
 	/**
