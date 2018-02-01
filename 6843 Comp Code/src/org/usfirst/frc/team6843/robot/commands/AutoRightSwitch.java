@@ -2,9 +2,6 @@ package org.usfirst.frc.team6843.robot.commands;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
-/**
- *
- */
 public class AutoRightSwitch extends CommandGroup {
 
 	public  AutoRightSwitch() {
