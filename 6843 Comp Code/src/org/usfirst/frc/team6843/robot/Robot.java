@@ -22,6 +22,8 @@ import javax.swing.Spring;
 
 import org.usfirst.frc.team6843.robot.commands.AutoLeftScale;
 import org.usfirst.frc.team6843.robot.commands.AutoLeftSwitch;
+import org.usfirst.frc.team6843.robot.commands.AutoMiddleLSwitch;
+import org.usfirst.frc.team6843.robot.commands.AutoMiddleRSwitch;
 import org.usfirst.frc.team6843.robot.commands.AutoRightScale;
 import org.usfirst.frc.team6843.robot.commands.AutoRightSwitch;
 import org.usfirst.frc.team6843.robot.commands.ExampleCommand;
@@ -159,16 +161,35 @@ private String Version = "1.0.0";
 		String gameData; {
 			gameData = DriverStation.getInstance().getGameSpecificMessage();
 		}
+		boolean weMiddle = false;
+		boolean weRight = false;
 		boolean weLeft = false;
 		if (weLeft) { 		 //If we are on the left
 
 			
-		if (gameData.charAt(1) == 'L') {
+		    if (gameData.charAt(1) == 'L') {
 			autonomousCommand = new AutoLeftScale(); 
+		    }
+		    else if (gameData.charAt(0) == 'L') {
+			autonomousCommand = new AutoLeftSwitch();
+		    }
+		if (weRight) {
+			
+			if (gameData.charAt(1) == 'R') {
+				autonomousCommand = new AutoRightScale();
+			}
+			else if (gameData.charAt(0) == 'R') {
+				autonomousCommand = new AutoRightSwitch();
+			}
+		if (weMiddle) {
+			if (gameData.charAt(0) == 'R') {
+				autonomousCommand = new AutoMiddleRSwitch();
+			}
+			else if (gameData.charAt(0) == 'L') {
+				autonomousCommand = new AutoMiddleLSwitch();
+			}
 		}
-		{
-//Score on scale			autonomousCommand.start();
-		} 
+		}
 	}
 		autonomousCommand.start();
 	}
