@@ -9,15 +9,15 @@ public class AutoLeftScale extends CommandGroup {
 
     public AutoLeftScale() {
     	    addSequential(new ClearEncoders());
-        addSequential(new DistDrive323());
+        addParallel(new DistDrive323());
+        addParallel(new LiftGoToScale());
         addSequential(new ClearEncoders());
         addSequential(new ZoopZoopRight());
-        addSequential(new ClearEncoders());
-        // Raise lift for scale
+        addSequential(new ClearEncoders());      
         addSequential(new ClearEncoders());
         addSequential(new DistDrive27());
         addSequential(new ClearEncoders());
-        // Push cube onto scale
+        addSequential(new SingleSolenoidOnOff());
         addSequential(new ClearEncoders());
         addSequential(new DistDriveReverse27());
         addSequential(new ClearEncoders());

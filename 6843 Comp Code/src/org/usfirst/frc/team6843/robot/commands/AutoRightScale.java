@@ -6,15 +6,15 @@ public class AutoRightScale extends CommandGroup {
 
     public AutoRightScale() {
         addSequential(new ClearEncoders());
-        addSequential(new DistDrive323());
+        addParallel(new DistDrive323());
+        addParallel(new LiftGoToScale());
         addSequential(new ClearEncoders());
         addSequential(new ZoopZoopLeft1());
         addSequential(new ClearEncoders());
-        // Raise lift for scale
         addSequential(new ClearEncoders());
         addSequential(new DistDrive27());
         addSequential(new ClearEncoders());
-        // Push cube onto scale
+        addSequential(new SingleSolenoidOnOff());
         addSequential(new ClearEncoders());
         addSequential(new DistDriveReverse27());
         addSequential(new ClearEncoders());

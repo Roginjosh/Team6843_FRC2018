@@ -18,11 +18,10 @@ public class AutoMiddleLSwitch extends CommandGroup {
         addSequential(new ClearEncoders());
         addSequential(new ZoopZoopRight());
         addSequential(new ClearEncoders());
-        // Add code to raise lift for switch here
         addSequential(new ClearEncoders());
         addSequential(new DistDrive20());
         addSequential(new ClearEncoders());
-        // Add code to push cube here
+        addSequential(new SingleSolenoidOnOff());
         addSequential(new ClearEncoders());
         addSequential(new DistDriveReverse41());
         addSequential(new ClearEncoders());
