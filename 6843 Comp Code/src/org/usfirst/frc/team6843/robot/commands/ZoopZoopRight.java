@@ -34,7 +34,7 @@ public class ZoopZoopRight extends Command {
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-    	if (this.driveSubsystem.getLeftPosition() >= 13 && this.driveSubsystem.getRightPosition() <= -13) {
+    	if (this.driveSubsystem.getLeftPosition() >= 11 && this.driveSubsystem.getRightPosition() <= -11) {
     		return true;
     	 } else {
         return false;

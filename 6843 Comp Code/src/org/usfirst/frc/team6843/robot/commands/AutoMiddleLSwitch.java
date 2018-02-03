@@ -8,7 +8,7 @@ public class AutoMiddleLSwitch extends CommandGroup {
     	    addSequential(new ClearEncoders());
         addSequential(new DistDrive36());
         addSequential(new ClearEncoders());
-        addSequential(new ZoopZoopLeft());
+        addSequential(new ZoopZoopLeft1());
         addSequential(new ClearEncoders());
         addSequential(new DistDrive119()); 
         addSequential(new ClearEncoders());
@@ -26,7 +26,7 @@ public class AutoMiddleLSwitch extends CommandGroup {
         addSequential(new ClearEncoders());
         addSequential(new DistDriveReverse41());
         addSequential(new ClearEncoders());
-        addSequential(new ZoopZoopLeft());
+        addSequential(new ZoopZoopLeft1());
         addSequential(new ClearEncoders());
         addSequential(new DistDrive100());
         addSequential(new ClearEncoders());

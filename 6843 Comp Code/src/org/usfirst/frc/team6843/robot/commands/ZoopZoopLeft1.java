@@ -9,41 +9,39 @@ import edu.wpi.first.wpilibj.command.Command;
 /**
  *
  */
-public class DistDrive41 extends Command {
-
-	protected final DriveSubsystem driveSubsystem;
-	protected OI oi;
-	
-    public DistDrive41() {
-        this.driveSubsystem = Robot.getInstance().getDriveSubsystem();
-        requires(this.driveSubsystem);
+public class ZoopZoopLeft1 extends Command {
+	protected /* final */ OI oi;
+	private DriveSubsystem driveSubsystem;
+		
+    public ZoopZoopLeft1() {
+       this.driveSubsystem = Robot.getInstance().getDriveSubsystem();
+		requires(this.driveSubsystem);
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
     		super.initialize();
+    		this.driveSubsystem.ClearEncoders();
 		this.oi = Robot.getInstance().getOI();
-		this.driveSubsystem.ClearEncoders();
+	
     }
 
     // Called repeatedly when this Command is scheduled to run
-    protected void execute() { 
-    		//this.driveSubsystem.encoderTest(300, 300);
-    	this.driveSubsystem.TalonVeloDrive(-.5, 0);
+    protected void execute() {
+    	this.driveSubsystem.encoderTest(-500, -500); // since one motor is always negative, this makes it turn left.
     }
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-			if(this.driveSubsystem.getLeftPosition() >= 41  && this.driveSubsystem.getRightPosition() >= 41) {
-    				return true;
-    			} else {
-    				return false;
-    			}
+    	if (this.driveSubsystem.getLeftPosition() <= -10 && this.driveSubsystem.getRightPosition() >= 10) {
+    		return true;
+    	 } else {
+        return false;
+    }
     }
 
     // Called once after isFinished returns true
     protected void end() {
-    	this.driveSubsystem.stop();
     }
 
     // Called when another command which requires one or more of the same

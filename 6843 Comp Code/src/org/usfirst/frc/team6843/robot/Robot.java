@@ -8,6 +8,7 @@
 package org.usfirst.frc.team6843.robot;
 
 import edu.wpi.first.wpilibj.Compressor;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
@@ -22,9 +23,13 @@ import javax.swing.Spring;
 
 import org.usfirst.frc.team6843.robot.commands.AutoLeftScale;
 import org.usfirst.frc.team6843.robot.commands.AutoLeftSwitch;
+import org.usfirst.frc.team6843.robot.commands.AutoMiddleLSwitch;
+import org.usfirst.frc.team6843.robot.commands.AutoMiddleRSwitch;
 import org.usfirst.frc.team6843.robot.commands.AutoRightScale;
 import org.usfirst.frc.team6843.robot.commands.AutoRightSwitch;
 import org.usfirst.frc.team6843.robot.commands.ExampleCommand;
+import org.usfirst.frc.team6843.robot.commands.ZoopZoopLeft;
+import org.usfirst.frc.team6843.robot.commands.ZoopZoopLeft1;
 import org.usfirst.frc.team6843.robot.subsystems.DriveSubsystem;
 import org.usfirst.frc.team6843.robot.subsystems.LiftVertAxis;
 import org.usfirst.frc.team6843.robot.subsystems.PneumaticsBase;
@@ -164,20 +169,42 @@ private String Version = "1.0.0";
 			autonomousCommand.start();
 		}
 		*/
-		String gameData; {
+		/*String gameData; {
 			gameData = DriverStation.getInstance().getGameSpecificMessage();
 		}
-		boolean weLeft = false;
-		if (weLeft) { 		 //If we are on the left
+		DigitalInput weMiddle = new DigitalInput(8);
+		DigitalInput weRight = new DigitalInput(7);
+		DigitalInput weLeft = new DigitalInput(9);
+		
+		 if (weLeft.get() == true) { 		 //If we are on the left
 
 			
-		if (gameData.charAt(1) == 'L') {
+		    if (gameData.charAt(1) == 'L') {
 			autonomousCommand = new AutoLeftScale(); 
+		    }
+		    else if (gameData.charAt(0) == 'L') {
+			autonomousCommand = new AutoLeftSwitch();
+		    }
+		 }
+		 if (weRight.get() == true) {
+			
+			if (gameData.charAt(1) == 'R') {
+				autonomousCommand = new AutoRightScale();
+			}
+			else if (gameData.charAt(0) == 'R') {
+				autonomousCommand = new AutoRightSwitch();
+			}
+		if (weMiddle.get() == true) {
+			if (gameData.charAt(0) == 'R') {
+				autonomousCommand = new AutoMiddleRSwitch();
+			}
+			else if (gameData.charAt(0) == 'L') {
+				autonomousCommand = new AutoMiddleLSwitch();
+			}
 		}
-		{
-//Score on scale			autonomousCommand.start();
-		} 
-	}
+		}
+	*/ autonomousCommand = new AutoLeftScale(); // After fixing ZoopZoopLeft1, AutoRightSwitch(), and AutoLeftSwitch work.
+		
 		autonomousCommand.start();
 	}
 

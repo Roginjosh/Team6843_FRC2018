@@ -8,7 +8,7 @@ public class AutoRightSwitch extends CommandGroup {
 		addSequential(new ClearEncoders());
 		addSequential(new DistDrive168());
 		addSequential(new ClearEncoders());
-		addSequential(new ZoopZoopLeft());
+		addSequential(new ZoopZoopLeft1());
 		addSequential(new ClearEncoders());
 		// Put code to raise lift to switch height here
 		addSequential(new ClearEncoders());

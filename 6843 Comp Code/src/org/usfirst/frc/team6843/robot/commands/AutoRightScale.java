@@ -8,7 +8,7 @@ public class AutoRightScale extends CommandGroup {
         addSequential(new ClearEncoders());
         addSequential(new DistDrive323());
         addSequential(new ClearEncoders());
-        addSequential(new ZoopZoopLeft());
+        addSequential(new ZoopZoopLeft1());
         addSequential(new ClearEncoders());
         // Raise lift for scale
         addSequential(new ClearEncoders());

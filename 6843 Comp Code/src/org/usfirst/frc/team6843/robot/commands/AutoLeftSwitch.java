@@ -17,7 +17,7 @@ public class AutoLeftSwitch extends CommandGroup {
     		// Put code here to push cube onto switch here
     		addSequential(new DistDriveReverse41());
     		addSequential(new ClearEncoders());
-    		addSequential(new ZoopZoopLeft());
+    		addSequential(new ZoopZoopLeft1());
     		addSequential(new ClearEncoders());
     		addSequential(new DistDrive100());
     	}
