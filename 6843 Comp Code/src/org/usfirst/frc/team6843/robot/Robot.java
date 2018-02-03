@@ -52,7 +52,7 @@ private PneumaticsBase PneumaticsBase;
 private LiftVertAxis LiftVertAxis;
 private OI oi;
 private Logger logger;
-private String Version = "1.0.0";
+private String Version = "1.1.0";
 //SendableChooser<Command> auto_chooser = new SendableChooser<>();
 
 
