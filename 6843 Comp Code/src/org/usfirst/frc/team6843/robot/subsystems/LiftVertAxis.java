@@ -42,9 +42,9 @@ public class LiftVertAxis extends Subsystem {
 		platformMotor.configPeakOutputForward(1, 100); 
 		platformMotor.configPeakOutputReverse(-1, 100);
 		// set closed loop gains in slot0 
-		platformMotor.config_kF(0, 1, 100); 
-		platformMotor.config_kP(0, 0.55, 100); 
-		platformMotor.config_kI(0, 0.0055, 100);
+		platformMotor.config_kF(0, 0, 100); 
+		platformMotor.config_kP(0, 0.2, 100); 
+		platformMotor.config_kI(0, 0.0, 100);
 		platformMotor.config_kD(0, 0, 100);
 		platformMotor.config_IntegralZone(0, 20, 100);
 		
@@ -58,7 +58,9 @@ public class LiftVertAxis extends Subsystem {
 
 		
 
-	
+	public void goToHeight(double height) {
+		platformMotor.set(ControlMode.Position, height);
+	}
 	
 	public void stop() {
 		//drive.arcadeDrive(0.0, 0.0);

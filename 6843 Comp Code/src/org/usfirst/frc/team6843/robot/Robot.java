@@ -112,6 +112,14 @@ private String Version = "1.0.0";
 		return this.PneumaticsBase;
 	}
 	
+	public LiftVertAxis getLiftVertAxis() {
+		if (this.LiftVertAxis == null) {
+			throw new IllegalStateException(
+					"Robot.getLiftVertAxis() was called before Robot.robotInit() was called.");
+		
+		}
+		return this.LiftVertAxis;
+	}
 	
 	/**
 	 * This function is called once each time the robot enters Disabled mode.
