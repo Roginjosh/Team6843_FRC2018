@@ -12,11 +12,11 @@ public class AutoMiddleRSwitch extends CommandGroup {
         addSequential(new ClearEncoders());
         addSequential(new DistDrive100());
         addSequential(new ClearEncoders());
-        addSequential(new ZoopZoopLeft());
+        addSequential(new ZoopZoopLeft1());
         addSequential(new ClearEncoders());
         addSequential(new DistDrive115_5());
         addSequential(new ClearEncoders());
-        addSequential(new ZoopZoopLeft());
+        addSequential(new ZoopZoopLeft1());
         addSequential(new ClearEncoders());
         // Add code to raise lift for switch here
         addSequential(new ClearEncoders());

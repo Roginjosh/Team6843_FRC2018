@@ -29,7 +29,7 @@ public class DistDrive27 extends Command {
     // Called repeatedly when this Command is scheduled to run
     protected void execute() { 
     		//this.driveSubsystem.encoderTest(300, 300);
-    	this.driveSubsystem.TalonVeloDrive(-.8, 0);
+    	this.driveSubsystem.TalonVeloDrive(-.5, 0);
     }
 
     // Make this return true when this Command no longer needs to run execute()
