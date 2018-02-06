@@ -124,12 +124,12 @@ public class DriveSubsystem extends Subsystem {
 		double rightPower = power;
 		double intFactor = gyro.getAngle() / 180;
 		if (gyro.getAngle() > 0){
-		leftMotor1.set(ControlMode.Velocity, leftPower * (1 - (gyro.getAngle()/360)));
+		leftMotor1.set(ControlMode.Velocity, leftPower * (1 - ( gyro.getAngle()/10)));
 		rightMotor1.set(ControlMode.Velocity, rightPower);
 			
 		} else if (gyro.getAngle() < 0){
 			leftMotor1.set(ControlMode.Velocity, leftPower);
-			rightMotor1.set(ControlMode.Velocity, rightPower * (1 + (gyro.getAngle()/360)));
+			rightMotor1.set(ControlMode.Velocity, rightPower * (1 + ( gyro.getAngle()/10)));
 				
 		} else {
 			leftMotor1.set(ControlMode.Velocity, leftPower);
@@ -157,10 +157,10 @@ public class DriveSubsystem extends Subsystem {
 			rightMotor1.set(ControlMode.Velocity, (1000 * power));
 		} else if ((Math.round(((10 * curve))) > 0)) {
 			leftMotor1.set(ControlMode.Velocity, (-1000 * power));
-			rightMotor1.set(ControlMode.Velocity, (1000 * (power * (1 - curve))));
+			rightMotor1.set(ControlMode.Velocity, (1000 * (power * (1 - (1 * curve)))));
 		} else if ((Math.round((10 * curve)) < 0)) {
 			rightMotor1.set(ControlMode.Velocity, (1000 * power));
-			leftMotor1.set(ControlMode.Velocity, (-1000 * (power * (1 + curve))));
+			leftMotor1.set(ControlMode.Velocity, (-1000 * (power * (1 + (1 * curve)))));
 		}
 		
 		
@@ -205,6 +205,9 @@ public class DriveSubsystem extends Subsystem {
 		rightMotor1.set(ControlMode.Position, rightPos);
 		
 		
+	}
+	public void resetGyro() {
+		gyro.reset();
 	}
 	public void stop() {
 		//drive.arcadeDrive(0.0, 0.0);

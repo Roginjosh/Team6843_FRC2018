@@ -61,7 +61,7 @@ public class OI {
 		buttonX.whenPressed(new dDriveTest());
 	*/
 	buttonA.whileHeld(new /*AutoLeftScale()*/ DistDrive());
-	buttonB.whenPressed(new AutoLeftSwitch());
+	buttonB.whenPressed(new /*AutoLeftSwitch()*/ ExampleCommand());
 	buttonX.whenPressed(new AutoMiddleLSwitch());
 	buttonY.whenPressed(new AutoMiddleRSwitch());
 	buttonLB.whenPressed(new AutoRightScale());
