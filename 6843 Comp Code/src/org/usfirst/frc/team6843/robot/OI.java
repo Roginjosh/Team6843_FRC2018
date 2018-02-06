@@ -33,7 +33,7 @@ import edu.wpi.first.wpilibj.buttons.JoystickButton;
  * interface to the commands and command groups that allow control of the robot.
  */
 public class OI {
-	Joystick gamepad = new Joystick(0);
+	public Joystick gamepad = new Joystick(0);
 	public Button buttonA = new JoystickButton(gamepad, 1);
 	public Button buttonB = new JoystickButton(gamepad, 2);
 	public Button buttonX = new JoystickButton(gamepad, 3);
@@ -47,6 +47,7 @@ public class OI {
 	public Button button11 = new JoystickButton(gamepad, 11);
 	public Button button12 = new JoystickButton(gamepad, 12);
 	
+	
 	public OI() {
 		/*buttonLB.whileHeld(new ExampleCommand());
 		buttonRB.whenPressed(new DistDrive());
@@ -59,7 +60,7 @@ public class OI {
 		buttonRJoyClick.whenPressed(new ToggleJaws());
 		buttonX.whenPressed(new dDriveTest());
 	*/
-	buttonA.whenPressed(new AutoLeftScale());
+	buttonA.whileHeld(new /*AutoLeftScale()*/ DistDrive());
 	buttonB.whenPressed(new AutoLeftSwitch());
 	buttonX.whenPressed(new AutoMiddleLSwitch());
 	buttonY.whenPressed(new AutoMiddleRSwitch());
@@ -67,6 +68,9 @@ public class OI {
 	buttonRB.whenPressed(new AutoRightSwitch());
 	}
 	
+	public double getRightTriggerAxis() {
+		return gamepad.getRawAxis(3);
+	}
 	public double getVertAxis() {
 		return gamepad.getRawAxis(1);
 	}

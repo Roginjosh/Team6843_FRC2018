@@ -249,6 +249,7 @@ private String Version = "1.1.1";
 		SmartDashboard.putNumber("Left Vert Axis", this.oi.getVertAxis());
 		SmartDashboard.putNumber("Right Horiz Axis", this.oi.getHorizAxis());
 		SmartDashboard.putNumber("Angle", this.driveSubsystem.gyro.getAngle());
+		SmartDashboard.putNumber("Tgyro", this.driveSubsystem.tgyro.getAngle());
 		//SmartDashboard.putNumber();
 	}
 	

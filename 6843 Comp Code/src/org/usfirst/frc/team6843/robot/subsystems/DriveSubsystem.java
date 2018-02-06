@@ -36,6 +36,7 @@ public class DriveSubsystem extends Subsystem {
 	//private final WPI_TalonSRX rightMotor2 = new WPI_TalonSRX(RobotMap.RIGHT_MOTOR_2);
 	private final DifferentialDrive drive = new DifferentialDrive(leftMotor1, rightMotor1);
 	public Gyro gyro = new AnalogGyro(0);
+	public Gyro tgyro = new AnalogGyro(1);
 	public double dIN = 0;
 	public double dOUT = 0;
 	public double vOUT = 0;
@@ -122,10 +123,17 @@ public class DriveSubsystem extends Subsystem {
 		double leftPower = -power;
 		double rightPower = power;
 		double intFactor = gyro.getAngle() / 180;
-		if (intFactor > 0){
-		leftMotor1.set(ControlMode.Velocity, leftPower);
+		if (gyro.getAngle() > 0){
+		leftMotor1.set(ControlMode.Velocity, leftPower * (1 - (gyro.getAngle()/360)));
 		rightMotor1.set(ControlMode.Velocity, rightPower);
 			
+		} else if (gyro.getAngle() < 0){
+			leftMotor1.set(ControlMode.Velocity, leftPower);
+			rightMotor1.set(ControlMode.Velocity, rightPower * (1 + (gyro.getAngle()/360)));
+				
+		} else {
+			leftMotor1.set(ControlMode.Velocity, leftPower);
+			rightMotor1.set(ControlMode.Velocity, rightPower);
 		}
 		
 		
