@@ -29,7 +29,7 @@ public class DistDrive323 extends Command {
     // Called repeatedly when this Command is scheduled to run
     protected void execute() { 
     		//this.driveSubsystem.encoderTest(300, 300);
-    	this.driveSubsystem.TalonVeloDrive(-.5, 0.000000000000000019); // negative curve makes robot go right
+    	this.driveSubsystem.TalonVeloDrive(-.5, 0); // negative curve makes robot go right
     }
 
     // Make this return true when this Command no longer needs to run execute()

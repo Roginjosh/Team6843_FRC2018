@@ -19,9 +19,11 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
+import edu.wpi.first.wpilibj.AnalogGyro;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj.interfaces.Gyro;
 
 /**
  * An example subsystem.  You can replace me with your own Subsystem.
@@ -33,10 +35,7 @@ public class DriveSubsystem extends Subsystem {
 	public final WPI_TalonSRX rightMotor1 = new WPI_TalonSRX(RobotMap.RIGHT_MOTOR_1);
 	//private final WPI_TalonSRX rightMotor2 = new WPI_TalonSRX(RobotMap.RIGHT_MOTOR_2);
 	private final DifferentialDrive drive = new DifferentialDrive(leftMotor1, rightMotor1);
-	double kP = 0;
-	double kI = 0;
-	double kD = 0;
-	double kF = 1.0;
+	public Gyro gyro = new AnalogGyro(0);
 	public double dIN = 0;
 	public double dOUT = 0;
 	public double vOUT = 0;
@@ -117,6 +116,19 @@ public class DriveSubsystem extends Subsystem {
 			rightMotor1.set(ControlMode.Velocity, power);
 			
 		}
+	}
+	
+	public void gyroStraightAssist(double power) {
+		double leftPower = -power;
+		double rightPower = power;
+		double intFactor = gyro.getAngle() / 180;
+		if (intFactor > 0){
+		leftMotor1.set(ControlMode.Velocity, leftPower);
+		rightMotor1.set(ControlMode.Velocity, rightPower);
+			
+		}
+		
+		
 	}
 	
 	public AutoParameters autoTurnValue(double angle, double radius, double vIN) {

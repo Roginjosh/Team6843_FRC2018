@@ -34,7 +34,7 @@ public class DistDrive41 extends Command {
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-			if(this.driveSubsystem.getLeftPosition() >= 41  && this.driveSubsystem.getRightPosition() >= 41) {
+			if(this.driveSubsystem.getLeftPosition() >= 21  && this.driveSubsystem.getRightPosition() >= 21) {
     				return true;
     			} else {
     				return false;

@@ -9,8 +9,8 @@ public class AutoLeftScale extends CommandGroup {
 
     public AutoLeftScale() {
     	    addSequential(new ClearEncoders());
-        addParallel(new DistDrive323());
-        addParallel(new LiftGoToScale());
+        addSequential(new DistDrive323());
+        addSequential(new LiftGoToScale());
         addSequential(new ClearEncoders());
         addSequential(new ZoopZoopRight());
         addSequential(new ClearEncoders());      

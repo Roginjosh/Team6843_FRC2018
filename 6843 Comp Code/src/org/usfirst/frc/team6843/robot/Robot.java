@@ -52,7 +52,7 @@ private PneumaticsBase PneumaticsBase;
 private LiftVertAxis LiftVertAxis;
 private OI oi;
 private Logger logger;
-private String Version = "1.1.0";
+private String Version = "1.1.1";
 //SendableChooser<Command> auto_chooser = new SendableChooser<>();
 
 
@@ -71,7 +71,10 @@ private String Version = "1.1.0";
 		this.logger = Logger.getLogger(this.getClass().getName());
 		this.driveSubsystem = new DriveSubsystem();
 		this.PneumaticsBase = new PneumaticsBase();
-		this.oi = new OI();   //must be below subsystems!!!
+		this.LiftVertAxis = new LiftVertAxis();
+		this.oi = new OI();  
+
+		//must be below subsystems!!!
 		
 		//auto_chooser.addDefault("Default Auto", new ExampleCommand());
 		// chooser.addObject("My Auto", new MyAutoCommand());
@@ -245,6 +248,7 @@ private String Version = "1.1.0";
 		SmartDashboard.putString("Control Mode", this.driveSubsystem.rightMotor1.getControlMode().name());
 		SmartDashboard.putNumber("Left Vert Axis", this.oi.getVertAxis());
 		SmartDashboard.putNumber("Right Horiz Axis", this.oi.getHorizAxis());
+		SmartDashboard.putNumber("Angle", this.driveSubsystem.gyro.getAngle());
 		//SmartDashboard.putNumber();
 	}
 	

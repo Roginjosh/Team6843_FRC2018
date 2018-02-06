@@ -7,6 +7,12 @@
 
 package org.usfirst.frc.team6843.robot;
 
+import org.usfirst.frc.team6843.robot.commands.AutoLeftScale;
+import org.usfirst.frc.team6843.robot.commands.AutoLeftSwitch;
+import org.usfirst.frc.team6843.robot.commands.AutoMiddleLSwitch;
+import org.usfirst.frc.team6843.robot.commands.AutoMiddleRSwitch;
+import org.usfirst.frc.team6843.robot.commands.AutoRightScale;
+import org.usfirst.frc.team6843.robot.commands.AutoRightSwitch;
 import org.usfirst.frc.team6843.robot.commands.ClearEncoders;
 import org.usfirst.frc.team6843.robot.commands.DistDrive;
 import org.usfirst.frc.team6843.robot.commands.ExampleCommand;
@@ -42,7 +48,7 @@ public class OI {
 	public Button button12 = new JoystickButton(gamepad, 12);
 	
 	public OI() {
-		buttonLB.whileHeld(new ExampleCommand());
+		/*buttonLB.whileHeld(new ExampleCommand());
 		buttonRB.whenPressed(new DistDrive());
 		buttonA.whenPressed(new ClearEncoders());
 		buttonY.whenPressed(new RightTurn());
@@ -52,6 +58,13 @@ public class OI {
 		buttonLJoyClick.whileHeld(new SingleSolenoidOnOff());
 		buttonRJoyClick.whenPressed(new ToggleJaws());
 		buttonX.whenPressed(new dDriveTest());
+	*/
+	buttonA.whenPressed(new AutoLeftScale());
+	buttonB.whenPressed(new AutoLeftSwitch());
+	buttonX.whenPressed(new AutoMiddleLSwitch());
+	buttonY.whenPressed(new AutoMiddleRSwitch());
+	buttonLB.whenPressed(new AutoRightScale());
+	buttonRB.whenPressed(new AutoRightSwitch());
 	}
 	
 	public double getVertAxis() {
