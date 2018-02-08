@@ -66,7 +66,7 @@ public class RightTurn extends Command {
 	protected void initialize() {
 		super.initialize();
 		this.oi = Robot.getInstance().getOI();
-		testTurn = this.driveSubsystem.autoTurnValue(360.0, 40.0, 500.0);
+		//testTurn = this.driveSubsystem.autoTurnValue(360.0, 40.0, 500.0);
 	}
 
 	// Called repeatedly when this Command is scheduled to run

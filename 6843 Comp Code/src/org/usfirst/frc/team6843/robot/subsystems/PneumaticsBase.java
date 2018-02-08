@@ -9,15 +9,15 @@ import edu.wpi.first.wpilibj.command.Subsystem;
  *
  */
 public class PneumaticsBase extends Subsystem {
-
+	
+	public Compressor Compressor = new Compressor(0);
 	public Solenoid cubePush = new Solenoid(0);
 	public DoubleSolenoid jaws = new DoubleSolenoid(1, 2);
 	public boolean cubePushToggle = true;
 	public boolean toggleJawsToggle = true;
 	
     public void initDefaultCommand() {
-        // Set the default command for a subsystem here.
-        //setDefaultCommand(new MySpecialCommand());
+       
     }
     
     public void ToggleJaws() {

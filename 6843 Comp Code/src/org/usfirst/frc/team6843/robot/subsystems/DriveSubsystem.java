@@ -30,18 +30,12 @@ import edu.wpi.first.wpilibj.interfaces.Gyro;
  */
 public class DriveSubsystem extends Subsystem {
 	//public OI oi;
-	public final WPI_TalonSRX leftMotor1 = new WPI_TalonSRX(RobotMap.LEFT_MOTOR_1);
+	private final WPI_TalonSRX leftMotor1 = new WPI_TalonSRX(RobotMap.LEFT_MOTOR_1);
 	//private final WPI_TalonSRX leftMotor2 = new WPI_TalonSRX(RobotMap.LEFT_MOTOR_2);
-	public final WPI_TalonSRX rightMotor1 = new WPI_TalonSRX(RobotMap.RIGHT_MOTOR_1);
+	private final WPI_TalonSRX rightMotor1 = new WPI_TalonSRX(RobotMap.RIGHT_MOTOR_1);
 	//private final WPI_TalonSRX rightMotor2 = new WPI_TalonSRX(RobotMap.RIGHT_MOTOR_2);
-	private final DifferentialDrive drive = new DifferentialDrive(leftMotor1, rightMotor1);
-	public Gyro gyro = new AnalogGyro(0);
-	public Gyro tgyro = new AnalogGyro(1);
-	public double dIN = 0;
-	public double dOUT = 0;
-	public double vOUT = 0;
-	public double vIN = 0;
-	boolean dimeMode = false;
+	//private final DifferentialDrive drive = new DifferentialDrive(leftMotor1, rightMotor1);
+	private Gyro gyro = new AnalogGyro(0);
 	
 //	leftEncoderVelocity 1080
 //	rightEncoderVelocity 1080
@@ -103,6 +97,23 @@ public class DriveSubsystem extends Subsystem {
 	//public double target() {
 	//	return 1000 * this.oi.getVertAxis();
 	//}
+	
+	public double getRawLeftEncoderCounts() {
+		return leftMotor1.getSelectedSensorPosition(0);
+	}
+	public double getRawRightEncoderCounts() {
+		return rightMotor1.getSelectedSensorPosition(0);
+	}
+	public String getLeftControlMode() {
+		return leftMotor1.getControlMode().name();
+	}
+	public String getRightControlMode() {
+		return rightMotor1.getControlMode().name();
+	}
+	public double getAngle() {
+		return gyro.getAngle();
+	}
+	
 	public double getLeftPosition() {
 		double leftRawPos = leftMotor1.getSelectedSensorPosition(0);
 		double leftUnitPos = leftRawPos / 1440;
@@ -122,14 +133,13 @@ public class DriveSubsystem extends Subsystem {
 	public void gyroStraightAssist(double power) {
 		double leftPower = -power;
 		double rightPower = power;
-		double intFactor = gyro.getAngle() / 180;
 		if (gyro.getAngle() > 0){
-		leftMotor1.set(ControlMode.Velocity, leftPower * (1 - ( gyro.getAngle()/10)));
+		leftMotor1.set(ControlMode.Velocity, leftPower * (1 - ( gyro.getAngle()/100)));
 		rightMotor1.set(ControlMode.Velocity, rightPower);
 			
 		} else if (gyro.getAngle() < 0){
 			leftMotor1.set(ControlMode.Velocity, leftPower);
-			rightMotor1.set(ControlMode.Velocity, rightPower * (1 + ( gyro.getAngle()/10)));
+			rightMotor1.set(ControlMode.Velocity, rightPower * (1 + ( gyro.getAngle()/100)));
 				
 		} else {
 			leftMotor1.set(ControlMode.Velocity, leftPower);
@@ -139,28 +149,24 @@ public class DriveSubsystem extends Subsystem {
 		
 	}
 	
-	public AutoParameters autoTurnValue(double angle, double radius, double vIN) {
-		dIN = (angle/360) * 2 * Math.PI * radius;
-		dOUT = (angle/360) * 2 * Math.PI * (radius + 24);
-		vOUT = vIN * (dOUT / dIN);
-		AutoParameters returnVal = new AutoParameters(dIN, dOUT, vOUT, vIN);
-		return returnVal;
-	}		
 	
 	public void TalonVeloDrive(double power, double curve) {
 
 		if ((Math.round(Math.abs(power) * 10) <= 1 && (Math.round(10 * curve) != 0))) {
-			rightMotor1.set(ControlMode.Velocity, (1000 * curve));
-			leftMotor1.set(ControlMode.Velocity, (1000 * curve));
+			rightMotor1.set(ControlMode.PercentOutput, (1 * curve));
+			leftMotor1.set(ControlMode.PercentOutput, (1 * curve));
 		} else if (Math.round((10 * curve)) == 0) {
-			leftMotor1.set(ControlMode.Velocity, (-1000 * power));
-			rightMotor1.set(ControlMode.Velocity, (1000 * power));
+			leftMotor1.set(ControlMode.PercentOutput, (-1 * power));
+			rightMotor1.set(ControlMode.PercentOutput, (1 * power));
 		} else if ((Math.round(((10 * curve))) > 0)) {
-			leftMotor1.set(ControlMode.Velocity, (-1000 * power));
-			rightMotor1.set(ControlMode.Velocity, (1000 * (power * (1 - (1 * curve)))));
+			leftMotor1.set(ControlMode.PercentOutput, (-1 * power));
+			rightMotor1.set(ControlMode.PercentOutput, (1 * (power * (1 - (1 * curve)))));
 		} else if ((Math.round((10 * curve)) < 0)) {
-			rightMotor1.set(ControlMode.Velocity, (1000 * power));
-			leftMotor1.set(ControlMode.Velocity, (-1000 * (power * (1 + (1 * curve)))));
+			rightMotor1.set(ControlMode.PercentOutput, (1 * power));
+			leftMotor1.set(ControlMode.PercentOutput, (-1 * (power * (1 + (1 * curve)))));
+		} else {
+			rightMotor1.set(ControlMode.PercentOutput, 0);
+			leftMotor1.set(ControlMode.PercentOutput, 0);
 		}
 		
 		
@@ -194,18 +200,23 @@ public class DriveSubsystem extends Subsystem {
 		rightMotor1.set(ControlMode.Velocity, rightPower);
 		}
 	
-	public void arcadeDrive(double power, double curve) {
+	/*public void arcadeDrive(double power, double curve) {
 		drive.arcadeDrive((-1 * power), (1 * curve));
 	}
-
+*/
 	public void dDriveTest(double leftPos, double rightPos) {
 		rightMotor1.selectProfileSlot(1, 0);
 		leftMotor1.selectProfileSlot(1, 0);
 		leftMotor1.set(ControlMode.Position, leftPos);
 		rightMotor1.set(ControlMode.Position, rightPos);
 		
-		
 	}
+	
+	public void strateMasheen(double leftpowa, double rightpowa) {
+		  leftMotor1.set(ControlMode.PercentOutput, leftpowa);
+		  rightMotor1.set(ControlMode.PercentOutput, rightpowa);
+	}
+	
 	public void resetGyro() {
 		gyro.reset();
 	}

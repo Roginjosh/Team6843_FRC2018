@@ -13,7 +13,7 @@ public class AutoRightSwitch extends CommandGroup {
 		addSequential(new ClearEncoders());
 		addSequential(new DistDrive41());
 		addSequential(new ClearEncoders());
-        addSequential(new SingleSolenoidOnOff());
+      //  addSequential(new SingleSolenoidOnOff());
 		addSequential(new DistDriveReverse41());
 		addSequential(new ClearEncoders());
 		addSequential(new ZoopZoopRight());

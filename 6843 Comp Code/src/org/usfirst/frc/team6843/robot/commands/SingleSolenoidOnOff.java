@@ -1,4 +1,4 @@
-package org.usfirst.frc.team6843.robot.commands;
+/*package org.usfirst.frc.team6843.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.TimedCommand;
@@ -51,3 +51,4 @@ public class SingleSolenoidOnOff extends Command{
 		}
 	}
 
+*/

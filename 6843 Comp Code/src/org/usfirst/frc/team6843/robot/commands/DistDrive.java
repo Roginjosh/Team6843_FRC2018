@@ -4,6 +4,8 @@ import org.usfirst.frc.team6843.robot.OI;
 import org.usfirst.frc.team6843.robot.Robot;
 import org.usfirst.frc.team6843.robot.subsystems.DriveSubsystem;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
+
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
@@ -28,15 +30,17 @@ public class DistDrive extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() { 
-    		//this.driveSubsystem.encoderTest(300, 300);
-    		this.driveSubsystem.gyroStraightAssist(300);
+    		this.driveSubsystem.strateMasheen(.26, -.30);  
     }
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-    					return false;
+    		if(this.driveSubsystem.getRawLeftEncoderCounts() >= 10400 && this.driveSubsystem.getRawRightEncoderCounts() <= -10400) {
+    					return true;
+    } else {
+    	return false;
     			}
-    
+    }
 
     // Called once after isFinished returns true
     protected void end() {

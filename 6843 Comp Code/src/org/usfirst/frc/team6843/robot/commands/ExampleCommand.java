@@ -70,12 +70,14 @@ public class ExampleCommand extends Command {
 	@Override
 	protected void execute() {
 		this.driveSubsystem.resetGyro();
+		this.driveSubsystem.ClearEncoders();
 		this.driveSubsystem.stop();
+		
 	}
 	// Make this return true when this Command no longer needs to run execute()
 	@Override
 	protected boolean isFinished() {
-			return false;
+			return true;
 		
 	}
 

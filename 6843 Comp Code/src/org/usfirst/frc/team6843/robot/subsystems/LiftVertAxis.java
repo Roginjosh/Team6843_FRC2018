@@ -28,12 +28,12 @@ import edu.wpi.first.wpilibj.drive.DifferentialDrive;
  * An example subsystem.  You can replace me with your own Subsystem.
  */
 public class LiftVertAxis extends Subsystem {
-	public WPI_TalonSRX platformMotor = new WPI_TalonSRX(RobotMap.PLATFORM_MOTOR);
-	public Talon climbMotor = new Talon(RobotMap.PLATFORM_MOTOR);
+//	public WPI_TalonSRX platformMotor = new WPI_TalonSRX(RobotMap.PLATFORM_MOTOR);
+//	public Talon climbMotor = new Talon(RobotMap.PLATFORM_MOTOR);
 			
 	
 	public LiftVertAxis() {
-		
+		/*
 		platformMotor.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 100);
 		platformMotor.setSensorPhase(true);
 		// set the peak, nominal outputs, and deadband 
@@ -48,7 +48,7 @@ public class LiftVertAxis extends Subsystem {
 		platformMotor.config_kD(0, 0, 100);
 		platformMotor.config_IntegralZone(0, 20, 100);
 		
-		platformMotor.setNeutralMode(NeutralMode.Brake);
+		platformMotor.setNeutralMode(NeutralMode.Brake);*/
 	}
 	
 	
@@ -59,12 +59,12 @@ public class LiftVertAxis extends Subsystem {
 		
 
 	public void goToHeight(double height) {
-		platformMotor.set(ControlMode.Position, height);
+	//	platformMotor.set(ControlMode.Position, height);
 	}
 	
 	public void stop() {
 		//drive.arcadeDrive(0.0, 0.0);
-		platformMotor.set(ControlMode.Velocity, 0);		
+	//	platformMotor.set(ControlMode.Velocity, 0);		
 	}
 
 

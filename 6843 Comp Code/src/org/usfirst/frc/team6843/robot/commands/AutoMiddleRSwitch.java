@@ -21,7 +21,7 @@ public class AutoMiddleRSwitch extends CommandGroup {
         addSequential(new ClearEncoders());
         addSequential(new DistDrive9());
         addSequential(new ClearEncoders());
-        addSequential(new SingleSolenoidOnOff());
+   //   addSequential(new SingleSolenoidOnOff());
         addSequential(new ClearEncoders());
         addSequential(new DistDriveReverse41());
         addSequential(new ClearEncoders());

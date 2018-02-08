@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
@@ -40,15 +41,14 @@ import org.usfirst.frc.team6843.robot.subsystems.PneumaticsBase;
  * creating this project, you must also update the build.properties file in the
  * project.
  */
-public class Robot extends TimedRobot {
+public class Robot extends IterativeRobot {
 	public static OI m_oi;
-	public Compressor Compressor = new Compressor(0);
 
 	public Command autonomousCommand;
 	SendableChooser<Command> m_chooser = new SendableChooser<>();
 private static Robot INSTANCE;
 private DriveSubsystem driveSubsystem;
-private PneumaticsBase PneumaticsBase;
+//private PneumaticsBase PneumaticsBase;
 private LiftVertAxis LiftVertAxis;
 private OI oi;
 private Logger logger;
@@ -70,12 +70,13 @@ private String Version = "1.1.1";
 		INSTANCE = this;
 		this.logger = Logger.getLogger(this.getClass().getName());
 		this.driveSubsystem = new DriveSubsystem();
-		this.PneumaticsBase = new PneumaticsBase();
+	//	this.PneumaticsBase = new PneumaticsBase();
 		this.LiftVertAxis = new LiftVertAxis();
-		this.oi = new OI();  
 
 		//must be below subsystems!!!
-		
+		this.oi = new OI();  
+		//MUST BE BELOW...DON'T FERGIT IT
+	
 		//auto_chooser.addDefault("Default Auto", new ExampleCommand());
 		// chooser.addObject("My Auto", new MyAutoCommand());
 		//SmartDashboard.putData("Auto mode", auto_chooser);
@@ -112,14 +113,14 @@ private String Version = "1.1.1";
 		return this.driveSubsystem;
 	}
 	
-	public PneumaticsBase getPneumaticsBase() {
+/*	public PneumaticsBase getPneumaticsBase() {
 		if (this.PneumaticsBase == null) {
 			throw new IllegalStateException(
 					"Robot.getPneumaticsBase() was called before Robot.robotInit() was called.");
 		}
 		return this.PneumaticsBase;
 	}
-	
+*/	
 	public LiftVertAxis getLiftVertAxis() {
 		if (this.LiftVertAxis == null) {
 			throw new IllegalStateException(
@@ -237,20 +238,15 @@ private String Version = "1.1.1";
 	public void teleopPeriodic() {
 		Scheduler.getInstance().run();
 		SmartDashboard.putNumber("Right Encooder Velocity", this.driveSubsystem.getRightVelocity());
-		SmartDashboard.putNumber("Right Encooder Position", /*this.driveSubsystem.getRightPosition()*/ this.driveSubsystem.rightMotor1.getSelectedSensorPosition(0));
+		SmartDashboard.putNumber("Right Encooder Position", this.driveSubsystem.getRawRightEncoderCounts());
 		SmartDashboard.putNumber("Left Encooder Velocity", this.driveSubsystem.getLeftVelocity());
-		SmartDashboard.putNumber("Left Encooder Position", /*this.driveSubsystem.getLeftPosition()*/ this.driveSubsystem.leftMotor1.getSelectedSensorPosition(0));
+		SmartDashboard.putNumber("Left Encooder Position", this.driveSubsystem.getRawLeftEncoderCounts());
 		SmartDashboard.putString("Version", Version);
-		SmartDashboard.putNumber("Left Target", this.oi.getTarget());
-		SmartDashboard.putNumber("Left Error", this.driveSubsystem.leftMotor1.getClosedLoopError(0));
-		SmartDashboard.putNumber("Right Target", this.oi.getTarget());
-		SmartDashboard.putNumber("Right Error", this.driveSubsystem.rightMotor1.getClosedLoopError(0));
-		SmartDashboard.putString("Control Mode", this.driveSubsystem.rightMotor1.getControlMode().name());
+		SmartDashboard.putString("Left Control Mode", this.driveSubsystem.getLeftControlMode());
+		SmartDashboard.putString("Right Control Mode", this.driveSubsystem.getRightControlMode());
 		SmartDashboard.putNumber("Left Vert Axis", this.oi.getVertAxis());
 		SmartDashboard.putNumber("Right Horiz Axis", this.oi.getHorizAxis());
-		SmartDashboard.putNumber("Angle", this.driveSubsystem.gyro.getAngle());
-		SmartDashboard.putNumber("Tgyro", this.driveSubsystem.tgyro.getAngle());
-		//SmartDashboard.putNumber();
+		SmartDashboard.putNumber("Angle", this.driveSubsystem.getAngle());
 	}
 	
 	

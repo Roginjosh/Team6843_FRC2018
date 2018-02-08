@@ -17,7 +17,7 @@ public class AutoLeftScale extends CommandGroup {
         addSequential(new ClearEncoders());
         addSequential(new DistDrive27());
         addSequential(new ClearEncoders());
-        addSequential(new SingleSolenoidOnOff());
+   //   addSequential(new SingleSolenoidOnOff());
         addSequential(new ClearEncoders());
         addSequential(new DistDriveReverse27());
         addSequential(new ClearEncoders());
