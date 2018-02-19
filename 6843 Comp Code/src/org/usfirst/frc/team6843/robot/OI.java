@@ -7,22 +7,19 @@
 
 package org.usfirst.frc.team6843.robot;
 
-import org.usfirst.frc.team6843.robot.commands.AutoLeftScale;
-import org.usfirst.frc.team6843.robot.commands.AutoLeftSwitch;
 import org.usfirst.frc.team6843.robot.commands.AutoMiddleLSwitch;
 import org.usfirst.frc.team6843.robot.commands.AutoMiddleRSwitch;
 import org.usfirst.frc.team6843.robot.commands.AutoRightScale;
-import org.usfirst.frc.team6843.robot.commands.AutoRightSwitch;
-import org.usfirst.frc.team6843.robot.commands.ClearEncoders;
-import org.usfirst.frc.team6843.robot.commands.DistDrive;
-import org.usfirst.frc.team6843.robot.commands.ExampleCommand;
-import org.usfirst.frc.team6843.robot.commands.RightTurn;
-import org.usfirst.frc.team6843.robot.commands.RightTurnn;
-//import org.usfirst.frc.team6843.robot.commands.SingleSolenoidOnOff;
-//import org.usfirst.frc.team6843.robot.commands.ToggleJaws;
-import org.usfirst.frc.team6843.robot.commands.ZoopZoopLeft;
-import org.usfirst.frc.team6843.robot.commands.ZoopZoopRight;
-
+import org.usfirst.frc.team6843.robot.commands.ClearTelemetry;
+import org.usfirst.frc.team6843.robot.commands.EjectCube;
+import org.usfirst.frc.team6843.robot.commands.LiftGoToBottom;
+import org.usfirst.frc.team6843.robot.commands.LiftGoToScale;
+import org.usfirst.frc.team6843.robot.commands.LiftGoToTop;
+import org.usfirst.frc.team6843.robot.commands.ManualOverride;
+import org.usfirst.frc.team6843.robot.commands.SlowLeftTurn;
+import org.usfirst.frc.team6843.robot.commands.SlowRightTurn;
+import org.usfirst.frc.team6843.robot.commands.ThrottledDrive;
+import org.usfirst.frc.team6843.robot.commands.ToggleJaws;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
@@ -32,53 +29,63 @@ import edu.wpi.first.wpilibj.buttons.JoystickButton;
  * interface to the commands and command groups that allow control of the robot.
  */
 public class OI {
-	public Joystick gamepad = new Joystick(0);
-	public Button buttonA = new JoystickButton(gamepad, 1);
-	public Button buttonB = new JoystickButton(gamepad, 2);
-	public Button buttonX = new JoystickButton(gamepad, 3);
-	public Button buttonY = new JoystickButton(gamepad, 4);
-	public Button buttonLB = new JoystickButton(gamepad, 5);
-	public Button buttonRB = new JoystickButton(gamepad, 6);
-	public Button buttonBack = new JoystickButton(gamepad, 7);
-	public Button buttonStart = new JoystickButton(gamepad, 8);
-	public Button buttonLJoyClick = new JoystickButton(gamepad, 9);
-	public Button buttonRJoyClick = new JoystickButton(gamepad, 10);
-	public Button button11 = new JoystickButton(gamepad, 11);
-	public Button button12 = new JoystickButton(gamepad, 12);
+	public Joystick driveGamepad = new Joystick(0);
+	public Joystick buttonMonkeyGamepad = new Joystick(1);
+	
+	public Button driveButtonA = new JoystickButton(driveGamepad, 1),
+	  driveButtonB = new JoystickButton(driveGamepad, 2),
+	  driveButtonX = new JoystickButton(driveGamepad, 3),
+	  driveButtonY = new JoystickButton(driveGamepad, 4),
+	  driveButtonLB = new JoystickButton(driveGamepad, 5),
+	  driveButtonRB = new JoystickButton(driveGamepad, 6),
+	  driveButtonBack = new JoystickButton(driveGamepad, 7),
+	  driveButtonStart = new JoystickButton(driveGamepad, 8),
+	  driveButtonLJoyClick = new JoystickButton(driveGamepad, 9),
+	  driveButtonRJoyClick = new JoystickButton(driveGamepad, 10),
+	  driveButton11 = new JoystickButton(driveGamepad, 11),
+	  driveButton12 = new JoystickButton(driveGamepad, 12),
+	  bMButtonA = new JoystickButton(buttonMonkeyGamepad, 1),
+	  bMButtonB = new JoystickButton(buttonMonkeyGamepad, 2),
+	  bMButtonX = new JoystickButton(buttonMonkeyGamepad, 3),
+	  bMButtonY = new JoystickButton(buttonMonkeyGamepad, 4),
+	  bMButtonLB = new JoystickButton(buttonMonkeyGamepad, 5),
+	  bMButtonRB = new JoystickButton(buttonMonkeyGamepad, 6),
+	  bMButtonBack = new JoystickButton(buttonMonkeyGamepad, 7),
+	  bMButtonStart = new JoystickButton(buttonMonkeyGamepad, 8),
+	  bMButtonLJoyClick = new JoystickButton(buttonMonkeyGamepad, 9),
+	  bMButtonRJoyClick = new JoystickButton(buttonMonkeyGamepad, 10),
+	  bMButton11 = new JoystickButton(buttonMonkeyGamepad, 11),
+	  bMButton12 = new JoystickButton(buttonMonkeyGamepad, 12);
+																							  
+
 	
 	
 	public OI() {
-		/*buttonLB.whileHeld(new ExampleCommand());
-		buttonRB.whenPressed(new DistDrive());
-		buttonA.whenPressed(new ClearEncoders());
-		buttonY.whenPressed(new RightTurn());
-		buttonB.whenPressed(new RightTurnn());
-		buttonStart.whenPressed(new ZoopZoopRight());
-		buttonBack.whenPressed(new ZoopZoopLeft());
-		buttonLJoyClick.whileHeld(new SingleSolenoidOnOff());
-		buttonRJoyClick.whenPressed(new ToggleJaws());
-		buttonX.whenPressed(new dDriveTest());
-	*/
-	buttonA.whenPressed(new AutoLeftScale());
-	buttonB.whenPressed(new AutoLeftSwitch());
-	buttonX.whenPressed(new AutoMiddleLSwitch());
-	buttonY.whenPressed(new AutoMiddleRSwitch());
-	buttonLB.whenPressed(new AutoRightScale());
-	buttonRB.whenPressed(new AutoRightSwitch());
+		driveButtonA.toggleWhenPressed(new ThrottledDrive());
+		driveButtonRB.whenPressed(new ClearTelemetry());
+		bMButtonA.whenPressed(new LiftGoToBottom());
+		bMButtonB.whenPressed(new LiftGoToScale());
+		bMButtonY.whenPressed(new LiftGoToTop());
+		bMButtonLB.whenPressed(new ToggleJaws());
+		bMButtonRB.whenPressed(new EjectCube());
+		bMButtonLJoyClick.toggleWhenPressed(new ManualOverride());
 	}
 	
 	public double getRightTriggerAxis() {
-		return gamepad.getRawAxis(3);
+		return driveGamepad.getRawAxis(3);
 	}
 	public double getVertAxis() {
-		return gamepad.getRawAxis(1);
+		return driveGamepad.getRawAxis(1);
 	}
 	
 	public double getHorizAxis() {
-		return gamepad.getRawAxis(4);
+		return driveGamepad.getRawAxis(4);
 	}
 
 	public double getTarget() {
 		return getVertAxis() * 1000;
+	}
+	public double getBMGamepadAxis5() {
+		return buttonMonkeyGamepad.getRawAxis(5);
 	}
 	}

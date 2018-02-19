@@ -29,7 +29,8 @@ public class DistDriveReverse41 extends Command {
     // Called repeatedly when this Command is scheduled to run
     protected void execute() { 
     		//this.driveSubsystem.encoderTest(300, 300);
-    	this.driveSubsystem.strateMasheen(-.26, .30);    }
+    	this.driveSubsystem.notStrateMasheen();   
+    	}
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {

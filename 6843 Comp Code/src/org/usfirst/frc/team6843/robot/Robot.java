@@ -7,30 +7,21 @@
 
 package org.usfirst.frc.team6843.robot;
 
-import edu.wpi.first.wpilibj.Compressor;
-import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.IterativeRobot;
-import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-
 import java.util.logging.Logger;
-
-import javax.swing.Spring;
-
 import org.usfirst.frc.team6843.robot.commands.AutoLeftScale;
 import org.usfirst.frc.team6843.robot.commands.AutoLeftSwitch;
 import org.usfirst.frc.team6843.robot.commands.AutoMiddleLSwitch;
 import org.usfirst.frc.team6843.robot.commands.AutoMiddleRSwitch;
 import org.usfirst.frc.team6843.robot.commands.AutoRightScale;
 import org.usfirst.frc.team6843.robot.commands.AutoRightSwitch;
-import org.usfirst.frc.team6843.robot.commands.ExampleCommand;
-import org.usfirst.frc.team6843.robot.commands.ZoopZoopLeft;
-import org.usfirst.frc.team6843.robot.commands.ZoopZoopLeft1;
+import org.usfirst.frc.team6843.robot.commands.InchesDriving;
 import org.usfirst.frc.team6843.robot.subsystems.DriveSubsystem;
 import org.usfirst.frc.team6843.robot.subsystems.LiftVertAxis;
 import org.usfirst.frc.team6843.robot.subsystems.PneumaticsBase;
@@ -42,18 +33,24 @@ import org.usfirst.frc.team6843.robot.subsystems.PneumaticsBase;
  * project.
  */
 public class Robot extends IterativeRobot {
-	public static OI m_oi;
-
 	public Command autonomousCommand;
-	SendableChooser<Command> m_chooser = new SendableChooser<>();
+	SendableChooser chooser;
+	SendableChooser prefChooser;
 private static Robot INSTANCE;
 private DriveSubsystem driveSubsystem;
-//private PneumaticsBase PneumaticsBase;
+private PneumaticsBase PneumaticsBase;
 private LiftVertAxis LiftVertAxis;
 private OI oi;
 private Logger logger;
-private String Version = "1.1.1";
-//SendableChooser<Command> auto_chooser = new SendableChooser<>();
+private String Version = "1.1.1";  
+String currentAuto = "Don't Know Yet";
+String fieldPosition;
+char left = 'L';
+char mid = 'M';
+char right = 'R';
+String Scale = "Scale";
+String Switch = "Switch";
+
 
 
 	/**
@@ -62,24 +59,26 @@ private String Version = "1.1.1";
 	 */
 	@Override
 	public void robotInit() {
-	/*	m_oi = new OI();
-		m_chooser.addDefault("Default Auto", new ExampleCommand());
-		// chooser.addObject("My Auto", new MyAutoCommand());
-		SmartDashboard.putData("Auto mode", m_chooser);
-		*/
+		
+		chooser = new SendableChooser();
+		prefChooser = new SendableChooser();
+		prefChooser.addDefault("Prefer Scale", Scale);
+		prefChooser.addObject("Prefer Switch", Switch);
+		chooser.addDefault("Left", left);
+		chooser.addObject("Middle", mid);
+		chooser.addObject("Right", right);
+		SmartDashboard.putData("Robot Position", chooser);
+		SmartDashboard.putData("Auto Goal Preference", prefChooser);
+        CameraServer.getInstance().startAutomaticCapture(); //USB Camera
+
 		INSTANCE = this;
 		this.logger = Logger.getLogger(this.getClass().getName());
 		this.driveSubsystem = new DriveSubsystem();
-	//	this.PneumaticsBase = new PneumaticsBase();
-		this.LiftVertAxis = new LiftVertAxis();
+		this.PneumaticsBase = new PneumaticsBase();
+	 	this.LiftVertAxis = new LiftVertAxis();
 
-		//must be below subsystems!!!
-		this.oi = new OI();  
-		//MUST BE BELOW...DON'T FERGIT IT
-	
-		//auto_chooser.addDefault("Default Auto", new ExampleCommand());
-		// chooser.addObject("My Auto", new MyAutoCommand());
-		//SmartDashboard.putData("Auto mode", auto_chooser);
+		
+		this.oi = new OI(); //Make sure that this is the last thing within robotInit
 		
 		
 	}
@@ -113,14 +112,14 @@ private String Version = "1.1.1";
 		return this.driveSubsystem;
 	}
 	
-/*	public PneumaticsBase getPneumaticsBase() {
+	public PneumaticsBase getPneumaticsBase() {
 		if (this.PneumaticsBase == null) {
 			throw new IllegalStateException(
 					"Robot.getPneumaticsBase() was called before Robot.robotInit() was called.");
 		}
 		return this.PneumaticsBase;
 	}
-*/	
+	
 	public LiftVertAxis getLiftVertAxis() {
 		if (this.LiftVertAxis == null) {
 			throw new IllegalStateException(
@@ -158,58 +157,204 @@ private String Version = "1.1.1";
 	 */
 	@Override
 	public void autonomousInit() {
-		//autonomousCommand = m_chooser.getSelected();
+		int Singularity = 0;
+		// Singularity is used for our switch/case statement in autonomous
+		//      It is four digits: ABCD
+		//                         A ---- 1: Prefer Switch
+		//                                2: Prefer Scale
+		//                          B --- 0: Robot is at the left position
+		//                                1: Robot is in the middle
+		//                                2: Robot is at right position
+		//                           C -- 0: Scale Color for my team on Left
+		//                                1: Scale Color for my team on Right
+		//                            D - 0: Switch Color for my team on Left
+		//                                1: Switch Color for my team on Right
 
-		/*
-		 * String autoSelected = SmartDashboard.getString("Auto Selector",
-		 * "Default"); switch(autoSelected) { case "My Auto": autonomousCommand
-		 * = new MyAutoCommand(); break; case "Default Auto": default:
-		 * autonomousCommand = new ExampleCommand(); break; }
-		 */
-
-		// schedule the autonomous command (example):
-		/*
-		if (autonomousCommand != null) {
-			autonomousCommand.start();
-		}
-		*/
-		/*String gameData; {
+		char fieldPosition = (char) chooser.getSelected();
+		String AutoPreference = (String) prefChooser.getSelected();
+		String gameData; 
+		{
 			gameData = DriverStation.getInstance().getGameSpecificMessage();
 		}
-		DigitalInput weMiddle = new DigitalInput(8);
-		DigitalInput weRight = new DigitalInput(7);
-		DigitalInput weLeft = new DigitalInput(9);
+	    if (gameData.charAt(0) == 'R') {
+	    	Singularity = Singularity + 1;
+	    }
+	    if (gameData.charAt(1) == 'R') {
+	    	Singularity = Singularity + 10;
+	    }
+	    if (fieldPosition == 'M') {
+	    	Singularity = Singularity + 100;
+	    }
+	    if (fieldPosition == 'R') {
+	    	Singularity = Singularity + 200;
+	    }
+	    if (AutoPreference == "Switch") {
+	    	Singularity = Singularity + 1000;
+	    }
+	    if (AutoPreference == "Scale") {
+	    	Singularity = Singularity + 2000;
+	    }
+	    
+
+	    switch(Singularity) {
+		case 1000:
+			autonomousCommand = new AutoLeftSwitch();
+			currentAuto = "Auto Left Switch";
+			break;
+		case 1001:
+			autonomousCommand = new AutoLeftScale();
+			currentAuto = "Auto Left Scale";
+			break;
+		case 1010:
+			autonomousCommand = new AutoLeftSwitch();
+			currentAuto = "Auto Left Switch";
+			break;
+		case 1011:
+			autonomousCommand = new InchesDriving(200);
+			currentAuto = "Go Straight Forward Only";
+			break;
+		case 1100:
+			autonomousCommand = new AutoMiddleLSwitch();
+			currentAuto = "Auto Middle Left Switch";
+			break;
+		case 1101:
+			autonomousCommand = new AutoMiddleRSwitch();
+			currentAuto = "Auto Middle Right Switch";
+			break;
+		case 1110:
+			autonomousCommand = new AutoMiddleLSwitch();
+			currentAuto = "Auto Middle Left Switch";
+			break;
+		case 1111:
+			autonomousCommand = new AutoMiddleRSwitch();
+			currentAuto = "Auto Middle Right Switch";
+			break;
+		case 1200:
+			autonomousCommand = new InchesDriving(200);
+			currentAuto = "Go Straight Forward Only";
+			break;
+		case 1201:
+			autonomousCommand = new AutoRightSwitch();
+			currentAuto = "Auto Right Switch";
+			break;
+		case 1210:
+			autonomousCommand = new AutoRightScale();
+			currentAuto = "Auto Right Scale";
+			break;
+		case 1211:
+			autonomousCommand = new AutoRightSwitch();
+			currentAuto = "Auto Right Switch";
+			break;
+		case 2000:
+			autonomousCommand = new AutoLeftScale();
+			currentAuto = "Auto Left Scale";
+			break;
+		case 2001:
+			autonomousCommand = new AutoLeftScale();
+			currentAuto = "Auto Left Scale";
+			break;
+		case 2010:
+			autonomousCommand = new AutoLeftSwitch();
+			currentAuto = "Auto Left Switch";
+			break;
+		case 2011:
+			autonomousCommand = new InchesDriving(200);
+			currentAuto = "Go Straight Forward Only";
+			break;
+		case 2100:
+			autonomousCommand = new AutoMiddleLSwitch();
+			currentAuto = "Auto Middle Left Switch";
+			break;
+		case 2101:
+			autonomousCommand = new AutoMiddleRSwitch();
+			currentAuto = "Auto Middle Right Switch";
+			break;
+		case 2110:
+			autonomousCommand = new AutoMiddleLSwitch();
+			currentAuto = "Auto Middle Left Switch";
+			break;
+		case 2111:
+			autonomousCommand = new AutoMiddleRSwitch();
+			currentAuto = "Auto Middle Right Switch";
+			break;
+		case 2200:
+			autonomousCommand = new InchesDriving(200);
+			currentAuto = "Go Straight Forward Only";
+			break;
+		case 2201:
+			autonomousCommand = new AutoRightSwitch();
+			currentAuto = "Auto Right Switch";
+			break;
+		case 2210:
+			autonomousCommand = new AutoRightScale();
+			currentAuto = "Auto Right Scale";
+			break;
+		case 2211:
+			autonomousCommand = new AutoRightScale();
+			currentAuto = "Auto Right Scale";
+			break;
 		
-		 if (weLeft.get() == true) { 		 //If we are on the left
+	    
+	    }
+	    	
+
+		
+		
+	    /*
+	    
+		
+		 if ((fieldPosition == 'L') && AutoPreference == "Scale") { 		 //If we are on the left
 
 			
 		    if (gameData.charAt(1) == 'L') {
-			autonomousCommand = new AutoLeftScale(); 
+			autonomousCommand = new AutoLeftScale();
+			currentAuto = "Auto Left Scale";
 		    }
 		    else if (gameData.charAt(0) == 'L') {
 			autonomousCommand = new AutoLeftSwitch();
+			currentAuto = "Auto Left Switch";
+		    } else {
+		    	autonomousCommand = new InchesDriving(200);
+		    	currentAuto = "Go Straight Forward Only";
 		    }
-		 }
-		 if (weRight.get() == true) {
+		    	
+		 } 
+		 
+		 if (fieldPosition == 'R') {
 			
 			if (gameData.charAt(1) == 'R') {
 				autonomousCommand = new AutoRightScale();
+				currentAuto = "Auto Right Scale";
 			}
 			else if (gameData.charAt(0) == 'R') {
 				autonomousCommand = new AutoRightSwitch();
-			}
-		if (weMiddle.get() == true) {
+				currentAuto = "Auto Right Switch";
+
+			} else {
+		    	autonomousCommand = new InchesDriving(200);
+		    	currentAuto = "Go Straight Forward Only";
+		    }
+			
+		 }
+		 
+		if (fieldPosition == 'M') {
 			if (gameData.charAt(0) == 'R') {
 				autonomousCommand = new AutoMiddleRSwitch();
+				currentAuto = "Auto Middle Right Switch";
+
 			}
 			else if (gameData.charAt(0) == 'L') {
 				autonomousCommand = new AutoMiddleLSwitch();
-			}
-		}
-		}
-	*/ autonomousCommand = new AutoLeftScale(); // After fixing ZoopZoopLeft1, AutoRightSwitch(), and AutoLeftSwitch work.
+				currentAuto = "Auto Middle Left Switch";
+
+			} 
+		}*/
 		
-		autonomousCommand.start();
+			SmartDashboard.putString("Auto Mode Running Currently", currentAuto);
+		
+		 if (autonomousCommand != null) {
+			autonomousCommand.start();
+		}
 	}
 
 	/**
@@ -218,7 +363,19 @@ private String Version = "1.1.1";
 	@Override
 	public void autonomousPeriodic() {
 		Scheduler.getInstance().run();
-	}
+		SmartDashboard.putNumber("Right Encooder Velocity", this.driveSubsystem.getRightVelocity());
+		SmartDashboard.putNumber("Right Encooder Position", this.driveSubsystem.getRawRightEncoderCounts());
+		SmartDashboard.putNumber("Left Encooder Velocity", this.driveSubsystem.getLeftVelocity());
+		SmartDashboard.putNumber("Left Encooder Position", this.driveSubsystem.getRawLeftEncoderCounts());
+		SmartDashboard.putString("Version", Version);
+		SmartDashboard.putString("Left Control Mode", this.driveSubsystem.getLeftControlMode());
+		SmartDashboard.putString("Right Control Mode", this.driveSubsystem.getRightControlMode());
+		SmartDashboard.putNumber("Left Vert Axis", this.oi.getVertAxis());
+		SmartDashboard.putNumber("Right Horiz Axis", this.oi.getHorizAxis());
+		SmartDashboard.putNumber("Angle", this.driveSubsystem.getAngle());
+		SmartDashboard.putBoolean("Right Motor Reverse Limit", this.driveSubsystem.rightMotor1ForwardLimit());
+		SmartDashboard.putBoolean("Right Motor Forward Limit", this.driveSubsystem.rightMotor1ReverseLimit());
+			}
 
 	@Override
 	public void teleopInit() {
@@ -247,6 +404,11 @@ private String Version = "1.1.1";
 		SmartDashboard.putNumber("Left Vert Axis", this.oi.getVertAxis());
 		SmartDashboard.putNumber("Right Horiz Axis", this.oi.getHorizAxis());
 		SmartDashboard.putNumber("Angle", this.driveSubsystem.getAngle());
+		SmartDashboard.putBoolean("Right Motor Reverse Limit", this.driveSubsystem.rightMotor1ForwardLimit());
+		SmartDashboard.putBoolean("Right Motor Forward Limit", this.driveSubsystem.rightMotor1ReverseLimit());
+		SmartDashboard.putNumber("Lift Position", this.LiftVertAxis.getLiftEncoder());
+		SmartDashboard.putBoolean("Are the Jaws Open?", this.PneumaticsBase.JawsState());
+		
 	}
 	
 	

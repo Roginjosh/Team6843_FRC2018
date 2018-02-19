@@ -7,10 +7,7 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import org.usfirst.frc.team6843.robot.subsystems.LiftVertAxis;
 
-/**
- * @param <LiftVertAxis>
- *
- */
+
 public class LiftGoToScale extends Command {
 	
 protected LiftVertAxis LiftVertAxis;
@@ -23,21 +20,27 @@ protected OI oi;
 
     // Called just before this Command runs the first time
     protected void initialize() {
-   
+    		setTimeout(1.75);
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	this.LiftVertAxis.goToHeight(400);
+ //   this.LiftVertAxis.liftDrive(.75);
+    	  this.LiftVertAxis.goToHeight(9000);
     }
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return false;
+    		if (isTimedOut()) {
+    			return true;
+    		} else {
+    			return false;
+    		}
     }
 
     // Called once after isFinished returns true
     protected void end() {
+    	this.LiftVertAxis.goToHeight(9000);
     }
 
     // Called when another command which requires one or more of the same

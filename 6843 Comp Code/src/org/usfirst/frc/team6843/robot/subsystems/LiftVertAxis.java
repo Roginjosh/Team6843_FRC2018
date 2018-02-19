@@ -19,6 +19,7 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -28,12 +29,12 @@ import edu.wpi.first.wpilibj.drive.DifferentialDrive;
  * An example subsystem.  You can replace me with your own Subsystem.
  */
 public class LiftVertAxis extends Subsystem {
-//	public WPI_TalonSRX platformMotor = new WPI_TalonSRX(RobotMap.PLATFORM_MOTOR);
-//	public Talon climbMotor = new Talon(RobotMap.PLATFORM_MOTOR);
-			
+	public WPI_TalonSRX platformMotor = new WPI_TalonSRX(RobotMap.PLATFORM_MOTOR);
+	public Talon climbMotor = new Talon(RobotMap.CLIMB_MOTOR);
+	double holdPosition;
 	
 	public LiftVertAxis() {
-		/*
+		
 		platformMotor.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 100);
 		platformMotor.setSensorPhase(true);
 		// set the peak, nominal outputs, and deadband 
@@ -48,26 +49,55 @@ public class LiftVertAxis extends Subsystem {
 		platformMotor.config_kD(0, 0, 100);
 		platformMotor.config_IntegralZone(0, 20, 100);
 		
-		platformMotor.setNeutralMode(NeutralMode.Brake);*/
+		platformMotor.setNeutralMode(NeutralMode.Brake);
 	}
 	
 	
 	/*public void initDefaultCommand() {
 		setDefaultCommand(new JoystickTankDrive());
 	}*/
+	
+	public double getLiftEncoder() {
+		return platformMotor.getSelectedSensorPosition(0);
+	}
+	
+	public boolean rightMotor1ForwardLimit() {
+		return platformMotor.getSensorCollection().isFwdLimitSwitchClosed();
 
-		
+	}	
+	
+	public void manualOverride(double power) {
+		platformMotor.set(ControlMode.PercentOutput, power);
+	}
+	
+	public boolean rightMotor1ReverseLimit() {
+		return platformMotor.getSensorCollection().isRevLimitSwitchClosed();
+	}
 
 	public void goToHeight(double height) {
-	//	platformMotor.set(ControlMode.Position, height);
+		platformMotor.set(ControlMode.Position, height);
 	}
+	
+	public void liftDrive(double power) {
+		platformMotor.set(ControlMode.PercentOutput, power);
+	}
+	
+	public void holdPosition() {
+		holdPosition = platformMotor.getSelectedSensorPosition(0);
+		platformMotor.set(ControlMode.Position, holdPosition);
+	}
+	
 	
 	public void stop() {
 		//drive.arcadeDrive(0.0, 0.0);
 	//	platformMotor.set(ControlMode.Velocity, 0);		
 	}
 
-
+	/*public void climbMotorDrive(double power) {
+		climbMotor.set(ControlMode.PercentOutput, power * .25);
+	}*/
+	
+	
 	@Override
 	protected void initDefaultCommand() {
 		// TODO Auto-generated method stub

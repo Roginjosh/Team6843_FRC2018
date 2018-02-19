@@ -32,16 +32,18 @@ public class DriveSubsystem extends Subsystem {
 	//public OI oi;
 	private final WPI_TalonSRX leftMotor1 = new WPI_TalonSRX(RobotMap.LEFT_MOTOR_1);
 	//private final WPI_TalonSRX leftMotor2 = new WPI_TalonSRX(RobotMap.LEFT_MOTOR_2);
-	private final WPI_TalonSRX rightMotor1 = new WPI_TalonSRX(RobotMap.RIGHT_MOTOR_1);
+	public final WPI_TalonSRX rightMotor1 = new WPI_TalonSRX(RobotMap.RIGHT_MOTOR_1);
 	//private final WPI_TalonSRX rightMotor2 = new WPI_TalonSRX(RobotMap.RIGHT_MOTOR_2);
 	//private final DifferentialDrive drive = new DifferentialDrive(leftMotor1, rightMotor1);
 	private Gyro gyro = new AnalogGyro(0);
+	double holdPosition;
+	public boolean manualOverride = false;
 	
 //	leftEncoderVelocity 1080
 //	rightEncoderVelocity 1080
 	
 	public DriveSubsystem() {
-		
+		rightMotor1.configOpenloopRamp(0, 0);
 		rightMotor1.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 100);
 		rightMotor1.setSensorPhase(true);
 		// set the peak, nominal outputs, and deadband 
@@ -62,9 +64,9 @@ public class DriveSubsystem extends Subsystem {
 		rightMotor1.config_kP(1, 0.2, 100); 
 		rightMotor1.config_kI(1, 0.0, 100);
 		rightMotor1.config_kD(1, 0, 100);
-		rightMotor1.config_IntegralZone(0, 20, 100);
+		rightMotor1.config_IntegralZone(1, 10, 100);
 		
-		
+		leftMotor1.configOpenloopRamp(0, 0);
 		leftMotor1.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 100);
 		leftMotor1.setSensorPhase(true);
 		// set the peak, nominal outputs, and deadband 
@@ -97,6 +99,14 @@ public class DriveSubsystem extends Subsystem {
 	//public double target() {
 	//	return 1000 * this.oi.getVertAxis();
 	//}
+	public boolean rightMotor1ForwardLimit() {
+		return rightMotor1.getSensorCollection().isFwdLimitSwitchClosed();
+
+	}	
+	public boolean rightMotor1ReverseLimit() {
+		return rightMotor1.getSensorCollection().isRevLimitSwitchClosed();
+
+	}
 	
 	public double getRawLeftEncoderCounts() {
 		return leftMotor1.getSelectedSensorPosition(0);
@@ -168,8 +178,7 @@ public class DriveSubsystem extends Subsystem {
 			rightMotor1.set(ControlMode.PercentOutput, 0);
 			leftMotor1.set(ControlMode.PercentOutput, 0);
 		}
-		
-		
+
 	}
 	
 	public  void ClearEncoders() {
@@ -212,9 +221,43 @@ public class DriveSubsystem extends Subsystem {
 		
 	}
 	
-	public void strateMasheen(double leftpowa, double rightpowa) {
-		  leftMotor1.set(ControlMode.PercentOutput, leftpowa);
-		  rightMotor1.set(ControlMode.PercentOutput, rightpowa);
+	public void ternMasheen(int negative) {
+		leftMotor1.set(ControlMode.PercentOutput, negative * .3);
+		rightMotor1.set(ControlMode.PercentOutput, negative * .3);
+	}
+	
+	public void mannyOver(double power) {
+		rightMotor1.set(ControlMode.PercentOutput, power);
+	}
+	public void strateMasheen(double left_power) {
+        double angle = gyro.getAngle();
+        double scale_left_for_right = -0.445 / 0.4; 
+		double angle_scale=0.04;
+		double right_power = left_power * scale_left_for_right;
+		if (Math.abs(angle) > 0.3) {
+			right_power = right_power + (-angle * angle_scale);
+		}
+	  
+        //leftMotor1.set(ControlMode.PercentOutput, 0.4);		
+		 // rightMotor1.set(ControlMode.PercentOutput, -.445); //Holy Imperator
+		  //rightMotor1.set(ControlMode.PercentOutput, -.415);   //Celtic BroBot
+	    leftMotor1.set(ControlMode.PercentOutput, left_power);
+	    rightMotor1.set(ControlMode.PercentOutput, right_power);
+	}
+	
+	public void notStrateMasheen() {
+		  leftMotor1.set(ControlMode.PercentOutput, -.26);
+		  rightMotor1.set(ControlMode.PercentOutput, .30);
+	}
+	
+	public void goToHeight(double height) {
+		rightMotor1.selectProfileSlot(1, 0);
+		rightMotor1.set(ControlMode.Position, height);
+	}
+	
+	public void holdPosition() {
+		holdPosition = rightMotor1.getSelectedSensorPosition(0);
+		rightMotor1.set(ControlMode.Position, holdPosition);
 	}
 	
 	public void resetGyro() {
