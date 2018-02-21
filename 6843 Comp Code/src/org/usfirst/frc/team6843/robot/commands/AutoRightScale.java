@@ -7,7 +7,7 @@ public class AutoRightScale extends CommandGroup {
     public AutoRightScale() {
         addSequential(new ClearTelemetry());
         addSequential(new InchesDriving(305));
-        //addSequential(new LiftGoToScale());
+        addSequential(new LiftGoToScale());
         addSequential(new ClearTelemetry());
         addSequential(new SlowLeftTurn());
         addSequential(new ClearTelemetry());

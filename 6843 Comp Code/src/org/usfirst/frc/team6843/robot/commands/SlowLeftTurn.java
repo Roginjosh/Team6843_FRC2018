@@ -10,7 +10,6 @@ package org.usfirst.frc.team6843.robot.commands;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.TimedCommand;
 
-import org.usfirst.frc.team6843.robot.AutoParameters;
 import org.usfirst.frc.team6843.robot.OI;
 import org.usfirst.frc.team6843.robot.Robot;
 import org.usfirst.frc.team6843.robot.subsystems.DriveSubsystem;
@@ -18,7 +17,6 @@ import org.usfirst.frc.team6843.robot.subsystems.DriveSubsystem;
 public class SlowLeftTurn extends Command {
 	protected /* final */ OI oi;
 	private DriveSubsystem driveSubsystem;
-	AutoParameters testTurn;
 	public SlowLeftTurn() {
 		this.driveSubsystem = Robot.getInstance().getDriveSubsystem();
 		requires(this.driveSubsystem);

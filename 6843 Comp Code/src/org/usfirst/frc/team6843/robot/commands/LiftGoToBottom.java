@@ -30,7 +30,7 @@ protected OI oi;
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-    		if(this.LiftVertAxis.platformMotor.getSensorCollection().isFwdLimitSwitchClosed()) {
+    		if(this.LiftVertAxis.rightMotor1ReverseLimit()) {
     			return true;
     		} else {
     			return false;

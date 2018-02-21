@@ -1,47 +1,38 @@
 package org.usfirst.frc.team6843.robot.commands;
 
-import org.usfirst.frc.team6843.robot.OI;
 import org.usfirst.frc.team6843.robot.Robot;
 import org.usfirst.frc.team6843.robot.subsystems.LiftVertAxis;
-import org.usfirst.frc.team6843.robot.subsystems.PneumaticsBase;
-
 
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
  *
  */
-public class ClimbMotorDrive extends Command {
-		protected LiftVertAxis LiftVertAxis;
-		protected PneumaticsBase PneumaticsBase;
-		protected OI oi;
-		
-    public ClimbMotorDrive() {
-    		this.LiftVertAxis = Robot.getInstance().getLiftVertAxis();
-		requires(this.LiftVertAxis);
-		this.PneumaticsBase = Robot.getInstance().getPneumaticsBase();
-		requires(this.PneumaticsBase);
-  
+public class EngageClutch extends Command {
+	LiftVertAxis LiftVertAxis;
+    public EngageClutch() {
+        this.LiftVertAxis = Robot.getInstance().getLiftVertAxis();
+        requires(LiftVertAxis);
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    		this.PneumaticsBase.OpenJaws();
-    		this.oi = Robot.getInstance().getOI();
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    		//this.LiftVertAxis.climbMotorDrive(this.oi.getBMGamepadAxis5());
+    		this.LiftVertAxis.engageClutch();
     }
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return false;
+        return true;
     }
 
     // Called once after isFinished returns true
     protected void end() {
+    		this.LiftVertAxis.manualOverride(0);
+    		this.LiftVertAxis.toggleClimbMode();
     }
 
     // Called when another command which requires one or more of the same

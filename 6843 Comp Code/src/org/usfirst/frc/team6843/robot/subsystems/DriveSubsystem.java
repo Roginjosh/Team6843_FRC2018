@@ -7,8 +7,6 @@
 
 package org.usfirst.frc.team6843.robot.subsystems;
 
-import org.usfirst.frc.team6843.robot.AutoParameters;
-import org.usfirst.frc.team6843.robot.DifferentDrive;
 import org.usfirst.frc.team6843.robot.OI;
 import org.usfirst.frc.team6843.robot.RobotMap;
 import org.usfirst.frc.team6843.robot.commands.JoystickTankDrive;
@@ -38,6 +36,8 @@ public class DriveSubsystem extends Subsystem {
 	private Gyro gyro = new AnalogGyro(0);
 	double holdPosition;
 	public boolean manualOverride = false;
+	private double driveScale = -0.445 / 0.4;//used to convert a power from left to right
+	
 	
 //	leftEncoderVelocity 1080
 //	rightEncoderVelocity 1080
@@ -129,36 +129,7 @@ public class DriveSubsystem extends Subsystem {
 		double leftUnitPos = leftRawPos / 1440;
 		double leftInchPos = leftUnitPos * 18.85;
 		return leftInchPos;
-	}
-	public void AutoDerive(double power, double distance) {
-		if (distance == 0) {
-			
-		} else { 
-			leftMotor1.set(ControlMode.Velocity, power);
-			rightMotor1.set(ControlMode.Velocity, power);
-			
-		}
-	}
-	
-	public void gyroStraightAssist(double power) {
-		double leftPower = -power;
-		double rightPower = power;
-		if (gyro.getAngle() > 0){
-		leftMotor1.set(ControlMode.Velocity, leftPower * (1 - ( gyro.getAngle()/100)));
-		rightMotor1.set(ControlMode.Velocity, rightPower);
-			
-		} else if (gyro.getAngle() < 0){
-			leftMotor1.set(ControlMode.Velocity, leftPower);
-			rightMotor1.set(ControlMode.Velocity, rightPower * (1 + ( gyro.getAngle()/100)));
-				
-		} else {
-			leftMotor1.set(ControlMode.Velocity, leftPower);
-			rightMotor1.set(ControlMode.Velocity, rightPower);
-		}
-		
-		
-	}
-	
+	}	
 	
 	public void TalonVeloDrive(double power, double curve) {
 
@@ -166,14 +137,14 @@ public class DriveSubsystem extends Subsystem {
 			rightMotor1.set(ControlMode.PercentOutput, (1 * curve));
 			leftMotor1.set(ControlMode.PercentOutput, (1 * curve));
 		} else if (Math.round((10 * curve)) == 0) {
-			leftMotor1.set(ControlMode.PercentOutput, (-1 * power));
+			leftMotor1.set(ControlMode.PercentOutput, (-1 * (1/driveScale) * power));
 			rightMotor1.set(ControlMode.PercentOutput, (1 * power));
 		} else if ((Math.round(((10 * curve))) > 0)) {
-			leftMotor1.set(ControlMode.PercentOutput, (-1 * power));
+			leftMotor1.set(ControlMode.PercentOutput, (-1 * (1/driveScale) * power));
 			rightMotor1.set(ControlMode.PercentOutput, (1 * (power * (1 - (1 * curve)))));
 		} else if ((Math.round((10 * curve)) < 0)) {
 			rightMotor1.set(ControlMode.PercentOutput, (1 * power));
-			leftMotor1.set(ControlMode.PercentOutput, (-1 * (power * (1 + (1 * curve)))));
+			leftMotor1.set(ControlMode.PercentOutput, (-1 * ((1/driveScale) * power * (1 + (1 * curve)))));
 		} else {
 			rightMotor1.set(ControlMode.PercentOutput, 0);
 			leftMotor1.set(ControlMode.PercentOutput, 0);
@@ -208,30 +179,15 @@ public class DriveSubsystem extends Subsystem {
 		leftMotor1.set(ControlMode.Velocity, leftPower);
 		rightMotor1.set(ControlMode.Velocity, rightPower);
 		}
-	
-	/*public void arcadeDrive(double power, double curve) {
-		drive.arcadeDrive((-1 * power), (1 * curve));
-	}
-*/
-	public void dDriveTest(double leftPos, double rightPos) {
-		rightMotor1.selectProfileSlot(1, 0);
-		leftMotor1.selectProfileSlot(1, 0);
-		leftMotor1.set(ControlMode.Position, leftPos);
-		rightMotor1.set(ControlMode.Position, rightPos);
 		
-	}
-	
 	public void ternMasheen(int negative) {
 		leftMotor1.set(ControlMode.PercentOutput, negative * .3);
 		rightMotor1.set(ControlMode.PercentOutput, negative * .3);
 	}
 	
-	public void mannyOver(double power) {
-		rightMotor1.set(ControlMode.PercentOutput, power);
-	}
 	public void strateMasheen(double left_power) {
         double angle = gyro.getAngle();
-        double scale_left_for_right = -0.445 / 0.4; 
+        double scale_left_for_right = driveScale; 
 		double angle_scale=0.04;
 		double right_power = left_power * scale_left_for_right;
 		if (Math.abs(angle) > 0.3) {
@@ -250,21 +206,11 @@ public class DriveSubsystem extends Subsystem {
 		  rightMotor1.set(ControlMode.PercentOutput, .30);
 	}
 	
-	public void goToHeight(double height) {
-		rightMotor1.selectProfileSlot(1, 0);
-		rightMotor1.set(ControlMode.Position, height);
-	}
-	
-	public void holdPosition() {
-		holdPosition = rightMotor1.getSelectedSensorPosition(0);
-		rightMotor1.set(ControlMode.Position, holdPosition);
-	}
 	
 	public void resetGyro() {
 		gyro.reset();
 	}
 	public void stop() {
-		//drive.arcadeDrive(0.0, 0.0);
 		leftMotor1.set(ControlMode.Velocity, 0);
 		rightMotor1.set(ControlMode.Velocity, 0);
 		

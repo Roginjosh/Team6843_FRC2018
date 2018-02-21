@@ -76,7 +76,7 @@ String Switch = "Switch";
 		this.driveSubsystem = new DriveSubsystem();
 		this.PneumaticsBase = new PneumaticsBase();
 	 	this.LiftVertAxis = new LiftVertAxis();
-
+	 	this.LiftVertAxis.initializeClutch();
 		
 		this.oi = new OI(); //Make sure that this is the last thing within robotInit
 		
@@ -293,63 +293,8 @@ String Switch = "Switch";
 			autonomousCommand = new AutoRightScale();
 			currentAuto = "Auto Right Scale";
 			break;
-		
-	    
 	    }
-	    	
-
-		
-		
-	    /*
-	    
-		
-		 if ((fieldPosition == 'L') && AutoPreference == "Scale") { 		 //If we are on the left
-
-			
-		    if (gameData.charAt(1) == 'L') {
-			autonomousCommand = new AutoLeftScale();
-			currentAuto = "Auto Left Scale";
-		    }
-		    else if (gameData.charAt(0) == 'L') {
-			autonomousCommand = new AutoLeftSwitch();
-			currentAuto = "Auto Left Switch";
-		    } else {
-		    	autonomousCommand = new InchesDriving(200);
-		    	currentAuto = "Go Straight Forward Only";
-		    }
-		    	
-		 } 
-		 
-		 if (fieldPosition == 'R') {
-			
-			if (gameData.charAt(1) == 'R') {
-				autonomousCommand = new AutoRightScale();
-				currentAuto = "Auto Right Scale";
-			}
-			else if (gameData.charAt(0) == 'R') {
-				autonomousCommand = new AutoRightSwitch();
-				currentAuto = "Auto Right Switch";
-
-			} else {
-		    	autonomousCommand = new InchesDriving(200);
-		    	currentAuto = "Go Straight Forward Only";
-		    }
-			
-		 }
-		 
-		if (fieldPosition == 'M') {
-			if (gameData.charAt(0) == 'R') {
-				autonomousCommand = new AutoMiddleRSwitch();
-				currentAuto = "Auto Middle Right Switch";
-
-			}
-			else if (gameData.charAt(0) == 'L') {
-				autonomousCommand = new AutoMiddleLSwitch();
-				currentAuto = "Auto Middle Left Switch";
-
-			} 
-		}*/
-		
+	    		
 			SmartDashboard.putString("Auto Mode Running Currently", currentAuto);
 		
 		 if (autonomousCommand != null) {
@@ -363,6 +308,7 @@ String Switch = "Switch";
 	@Override
 	public void autonomousPeriodic() {
 		Scheduler.getInstance().run();
+		SmartDashboard.putString("Auto Mode Running Currently", currentAuto);
 		SmartDashboard.putNumber("Right Encooder Velocity", this.driveSubsystem.getRightVelocity());
 		SmartDashboard.putNumber("Right Encooder Position", this.driveSubsystem.getRawRightEncoderCounts());
 		SmartDashboard.putNumber("Left Encooder Velocity", this.driveSubsystem.getLeftVelocity());
@@ -370,12 +316,13 @@ String Switch = "Switch";
 		SmartDashboard.putString("Version", Version);
 		SmartDashboard.putString("Left Control Mode", this.driveSubsystem.getLeftControlMode());
 		SmartDashboard.putString("Right Control Mode", this.driveSubsystem.getRightControlMode());
-		SmartDashboard.putNumber("Left Vert Axis", this.oi.getVertAxis());
-		SmartDashboard.putNumber("Right Horiz Axis", this.oi.getHorizAxis());
 		SmartDashboard.putNumber("Angle", this.driveSubsystem.getAngle());
-		SmartDashboard.putBoolean("Right Motor Reverse Limit", this.driveSubsystem.rightMotor1ForwardLimit());
-		SmartDashboard.putBoolean("Right Motor Forward Limit", this.driveSubsystem.rightMotor1ReverseLimit());
-			}
+		SmartDashboard.putBoolean("Lift Motor Forward Limit", this.LiftVertAxis.platformMotorForwardLimit());
+		SmartDashboard.putBoolean("Lift Motor Reverse Limit", this.LiftVertAxis.platformMotorReverseLimit());		
+		SmartDashboard.putNumber("Lift Position", this.LiftVertAxis.getLiftEncoder());
+		SmartDashboard.putBoolean("Are the Jaws Open?", this.PneumaticsBase.JawsState());		
+		SmartDashboard.putBoolean("Is The Clutch Engaged?", !this.LiftVertAxis.getClutchStatus());
+	}
 
 	@Override
 	public void teleopInit() {
@@ -394,6 +341,7 @@ String Switch = "Switch";
 	@Override
 	public void teleopPeriodic() {
 		Scheduler.getInstance().run();
+		SmartDashboard.putString("Auto Mode Running Currently", currentAuto);
 		SmartDashboard.putNumber("Right Encooder Velocity", this.driveSubsystem.getRightVelocity());
 		SmartDashboard.putNumber("Right Encooder Position", this.driveSubsystem.getRawRightEncoderCounts());
 		SmartDashboard.putNumber("Left Encooder Velocity", this.driveSubsystem.getLeftVelocity());
@@ -401,14 +349,13 @@ String Switch = "Switch";
 		SmartDashboard.putString("Version", Version);
 		SmartDashboard.putString("Left Control Mode", this.driveSubsystem.getLeftControlMode());
 		SmartDashboard.putString("Right Control Mode", this.driveSubsystem.getRightControlMode());
-		SmartDashboard.putNumber("Left Vert Axis", this.oi.getVertAxis());
-		SmartDashboard.putNumber("Right Horiz Axis", this.oi.getHorizAxis());
 		SmartDashboard.putNumber("Angle", this.driveSubsystem.getAngle());
-		SmartDashboard.putBoolean("Right Motor Reverse Limit", this.driveSubsystem.rightMotor1ForwardLimit());
-		SmartDashboard.putBoolean("Right Motor Forward Limit", this.driveSubsystem.rightMotor1ReverseLimit());
+		SmartDashboard.putBoolean("Lift Motor Forward Limit", this.LiftVertAxis.platformMotorForwardLimit());
+		SmartDashboard.putBoolean("Lift Motor Reverse Limit", this.LiftVertAxis.platformMotorReverseLimit());		
 		SmartDashboard.putNumber("Lift Position", this.LiftVertAxis.getLiftEncoder());
 		SmartDashboard.putBoolean("Are the Jaws Open?", this.PneumaticsBase.JawsState());
-		
+		SmartDashboard.putBoolean("Is The Clutch Engaged?", !this.LiftVertAxis.getClutchStatus());
+
 	}
 	
 	

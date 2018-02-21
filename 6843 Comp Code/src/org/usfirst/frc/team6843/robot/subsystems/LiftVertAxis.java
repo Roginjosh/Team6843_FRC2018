@@ -7,8 +7,6 @@
 
 package org.usfirst.frc.team6843.robot.subsystems;
 
-import org.usfirst.frc.team6843.robot.AutoParameters;
-import org.usfirst.frc.team6843.robot.DifferentDrive;
 import org.usfirst.frc.team6843.robot.OI;
 import org.usfirst.frc.team6843.robot.RobotMap;
 import org.usfirst.frc.team6843.robot.commands.JoystickTankDrive;
@@ -20,6 +18,7 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.DigitalOutput;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -31,9 +30,12 @@ import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 public class LiftVertAxis extends Subsystem {
 	public WPI_TalonSRX platformMotor = new WPI_TalonSRX(RobotMap.PLATFORM_MOTOR);
 	public Talon climbMotor = new Talon(RobotMap.CLIMB_MOTOR);
-	double holdPosition;
+	DigitalOutput solenoid = new DigitalOutput(1);
+	boolean clutchToggle = false;
+	private boolean climbMode = false;
 	
 	public LiftVertAxis() {
+		clutchToggle = true;
 		
 		platformMotor.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 100);
 		platformMotor.setSensorPhase(true);
@@ -61,13 +63,44 @@ public class LiftVertAxis extends Subsystem {
 		return platformMotor.getSelectedSensorPosition(0);
 	}
 	
-	public boolean rightMotor1ForwardLimit() {
+	public boolean platformMotorForwardLimit() {
 		return platformMotor.getSensorCollection().isFwdLimitSwitchClosed();
 
 	}	
 	
+	public boolean platformMotorReverseLimit() {
+		return platformMotor.getSensorCollection().isRevLimitSwitchClosed();
+
+	}	
+	
+	public void initializeClutch() {
+		solenoid.set(true);
+	}
+	
+	public void engageClutch() {
+		if (clutchToggle) {
+			clutchToggle = !clutchToggle;
+			solenoid.set(false);
+		}else {
+			clutchToggle = !clutchToggle;
+			solenoid.set(true);
+		}
+	}
+	
+	public void toggleClimbMode() {
+		climbMode = !climbMode;
+	}
+	
 	public void manualOverride(double power) {
-		platformMotor.set(ControlMode.PercentOutput, power);
+		if (!climbMode) {
+			platformMotor.set(ControlMode.PercentOutput, power);
+		} else {
+			climbMotor.set(-Math.abs(power * (4 / 3)));
+		}
+	}
+	
+	public boolean getClutchStatus() {
+		return clutchToggle;
 	}
 	
 	public boolean rightMotor1ReverseLimit() {
@@ -82,20 +115,13 @@ public class LiftVertAxis extends Subsystem {
 		platformMotor.set(ControlMode.PercentOutput, power);
 	}
 	
-	public void holdPosition() {
-		holdPosition = platformMotor.getSelectedSensorPosition(0);
-		platformMotor.set(ControlMode.Position, holdPosition);
+	public void climbDrive(double power) {
+		
 	}
-	
 	
 	public void stop() {
-		//drive.arcadeDrive(0.0, 0.0);
-	//	platformMotor.set(ControlMode.Velocity, 0);		
+		platformMotor.set(ControlMode.PercentOutput, 0);	
 	}
-
-	/*public void climbMotorDrive(double power) {
-		climbMotor.set(ControlMode.PercentOutput, power * .25);
-	}*/
 	
 	
 	@Override

@@ -31,8 +31,7 @@ protected OI oi;
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	this.LiftVertAxis.liftDrive(.2);
-    	//this.LiftVertAxis.goToHeight(1000);
+    	this.LiftVertAxis.goToHeight(10000);
     }
 
     // Make this return true when this Command no longer needs to run execute()
@@ -47,7 +46,6 @@ protected OI oi;
 
     // Called once after isFinished returns true
     protected void end() {
-    	this.LiftVertAxis.liftDrive(0);
     	this.PneumaticsBase.OpenJaws();
     }
 

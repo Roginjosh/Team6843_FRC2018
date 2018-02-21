@@ -12,6 +12,7 @@ import org.usfirst.frc.team6843.robot.commands.AutoMiddleRSwitch;
 import org.usfirst.frc.team6843.robot.commands.AutoRightScale;
 import org.usfirst.frc.team6843.robot.commands.ClearTelemetry;
 import org.usfirst.frc.team6843.robot.commands.EjectCube;
+import org.usfirst.frc.team6843.robot.commands.EngageClutch;
 import org.usfirst.frc.team6843.robot.commands.LiftGoToBottom;
 import org.usfirst.frc.team6843.robot.commands.LiftGoToScale;
 import org.usfirst.frc.team6843.robot.commands.LiftGoToTop;
@@ -66,6 +67,7 @@ public class OI {
 		bMButtonA.whenPressed(new LiftGoToBottom());
 		bMButtonB.whenPressed(new LiftGoToScale());
 		bMButtonY.whenPressed(new LiftGoToTop());
+		bMButtonX.whenPressed(new EngageClutch());
 		bMButtonLB.whenPressed(new ToggleJaws());
 		bMButtonRB.whenPressed(new EjectCube());
 		bMButtonLJoyClick.toggleWhenPressed(new ManualOverride());
